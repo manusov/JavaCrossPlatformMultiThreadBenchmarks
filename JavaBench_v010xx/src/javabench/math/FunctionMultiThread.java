@@ -33,23 +33,32 @@ public FunctionMultiThread
     int taskBase = 0;                       // address incremental for workers
     int taskSize = n / m;                   // numbers per worker
     // create and initializing workers array = f(pattern)
-    if ( p==0 )
-        {
-        wt = new WorkerTaskAdd[m];
-        for( int i=0; i<m; i++ )
-            {
-            wt[i] = new WorkerTaskAdd( taskBase , taskSize );
-            taskBase += taskSize;
-            }
-        }
-    else
-        {
-        wt = new WorkerTaskSin[m];
-        for( int i=0; i<m; i++ )
-            {
-            wt[i] = new WorkerTaskSin( taskBase , taskSize );
-            taskBase += taskSize;
-            }
+    switch (p) {
+        case 0:
+            wt = new WorkerTaskAdd[m];
+            for( int i=0; i<m; i++ )
+                {
+                wt[i] = new WorkerTaskAdd( taskBase , taskSize );
+                taskBase += taskSize;
+                }
+            break;
+        case 1:
+            wt = new WorkerTaskSqrt[m];
+            for( int i=0; i<m; i++ )
+                {
+                wt[i] = new WorkerTaskSqrt( taskBase , taskSize );
+                taskBase += taskSize;
+                }
+            break;
+        default:
+            wt = new WorkerTaskSin[m];
+            for( int i=0; i<m; i++ )
+                {
+                wt[i] = new WorkerTaskSin( taskBase , taskSize );
+                taskBase += taskSize;
+                }
+            
+            break;
         }
     }
 
@@ -100,6 +109,25 @@ class WorkerTaskAdd implements Callable<String>
         for(int i=0; i<size; i++)
             {
             array[1][base+i] = array[0][base+i] + 1.0;
+            array[0][base+i] += DXR;                     // prevent speculation
+            }
+        return null;
+        }
+    }
+
+class WorkerTaskSqrt implements Callable<String>
+    {
+    private final int base, size;
+    WorkerTaskSqrt( int x1, int x2 )  // constructor assigns base and size
+        {
+        base = x1;
+        size = x2;
+        }
+    @Override public String call()  // entry point for run task
+        {
+        for(int i=0; i<size; i++)
+            {
+            array[1][base+i] = Math.sqrt( array[0][base+i] );
             array[0][base+i] += DXR;                     // prevent speculation
             }
         return null;

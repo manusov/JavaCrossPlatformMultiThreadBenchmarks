@@ -57,13 +57,17 @@ public double[][] getArray()
 // this method is benchmarking object, single-thread
 public void tabulate()
     {
-    if ( p==0 )
+    switch (p) 
         {
-        tabulateAdd();
-        }
-    else
-        {
-        tabulateSin();
+        case 0:
+            tabulateAdd();
+            break;
+        case 1:
+            tabulateSqrt();
+            break;
+        default:
+            tabulateSin();
+            break;
         }
     }
 
@@ -75,6 +79,18 @@ private void tabulateAdd()
             {
             array[1][i] = array[0][i] + 1.0;   // set y[i] = x[i] + 1.0
             array[0][i] += DXR;                // prevent speculation
+            }
+        }
+    }
+
+private void tabulateSqrt()
+    {
+    for( int j=0; j<r; j++ )
+        {
+        for(int i=0; i<n; i++)
+            {
+            array[1][i] = Math.sqrt( array[0][i] );  // set y[i] = sin ( x[i] )
+            array[0][i] += DXR;                      // prevent speculation
             }
         }
     }

@@ -45,13 +45,13 @@ private final static int THREADS_COUNT[] =
 private final static int REPEATS_COUNT[] = 
     { 5, 10, 20, 50, 100, 1000 };
 private final static String MATH_OPERATION[] =
-    { "Addition" , "Sine" };
+    { "Addition" , "Sqrt" , "Sine" };
 private int arraySize, threadsCount, repeatsCount;
 
 private final static int DEFAULT_AS = 0;         // default combo settings
 private final static int DEFAULT_TC = 7;
 private final static int DEFAULT_RC = 1;
-private final static int DEFAULT_MO = 1;
+private final static int DEFAULT_MO = 2;
 
 private final SpringLayout sl;                   // panel and table
 private final JPanel p;
