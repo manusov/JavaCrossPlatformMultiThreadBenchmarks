@@ -1,0 +1,39 @@
+Report file.
+Java Math Benchmark v0.10.02
+(C)2018 IC Book Labs
+
+ Value, MOPS  Actual  Minimum  Maximum 
+--------------------------------------------
+ Median, MT   82,90   82,60    83,21   
+ ST           20,33   20,30    20,36   
+ Ratio        4,08    4,08     4,08    
+ Average, MT  84,22   77,46    93,96   
+ ST           20,58   19,81    21,88   
+ Ratio        4,09    3,91     4,29    
+--------------------------------------------
+
+ Option     Value           
+-------------------------------------
+ Array      1000000 doubles 
+ Threads    100             
+ Repeats    10              
+ Operation  Sine            
+-------------------------------------
+
+Detail log.
+All values in MOPS = Mega Operations per Second.
+Tag notes: M = Median
+
+ Multi-Thread  Tag    Single-Thread  Tag    Ratio  Tag   
+----------------------------------------------------------
+ 93,96                21,88                 4,29         
+ 89,84                21,30                 4,22         
+ 89,36                20,85                 4,29         
+ 84,15                20,77                 4,05         
+ 83,21         M      20,36          M      4,09         
+ 82,60         M      20,23                 4,08   M     
+ 81,99                20,12                 4,08   M     
+ 79,90                20,30          M      3,94         
+ 77,46                19,81                 3,91         
+ 79,70                20,14                 3,96         
+----------------------------------------------------------
