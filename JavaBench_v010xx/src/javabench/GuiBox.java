@@ -39,7 +39,7 @@ private final static int CY1 = -3;
 
 // data for test options
 private final static int ARRAY_SIZE[] =
-    { 1000000, 2000000, 5000000, 10000000 };
+    { 1000000, 2000000, 3000000, 5000000 };
 private final static int THREADS_COUNT[] = 
     { 1, 2, 4, 6, 8, 10, 50, 100, 500, 1000 };
 private final static int REPEATS_COUNT[] = 
