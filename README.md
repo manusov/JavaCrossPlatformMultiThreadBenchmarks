@@ -18,3 +18,8 @@ java -jar NAME.jar
 Console debug mode:
 
 java -jar NAME.jar console
+
+
+v0.11.01 , v0.03 build at JDK7 mode (legacy)
+
+v0.12.01 build at JDK8 mode (advanced)
