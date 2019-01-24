@@ -9,12 +9,12 @@ package javabench;
 
 public class About {
 
-private final static String VERSION_NAME = "v0.12.01";
+private final static String VERSION_NAME = "v0.12.02";
 private final static String VENDOR_NAME  = "(C)2018 IC Book Labs";
 private final static String SHORT_NAME   = "Math Benchmark " + VERSION_NAME;
 private final static String LONG_NAME    = "Java " + SHORT_NAME;
 private final static String WEB_SITE     = "http://icbook.com.ua";
-private final static String VENDOR_ICON  = "/sample1/resources/icbook.jpg";
+private final static String VENDOR_ICON  = "/javabench/resources/icbook.jpg";
 
 public static String getVersionName() { return VERSION_NAME; }
 public static String getVendorName()  { return VENDOR_NAME;  }
