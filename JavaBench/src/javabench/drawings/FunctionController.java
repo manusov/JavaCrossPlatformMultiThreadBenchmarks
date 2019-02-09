@@ -15,7 +15,6 @@ public class FunctionController implements FunctionControllerInterface
 {
 private final FunctionModelInterface model;
 private final FunctionViewInterface view;
-// private final FunctionControllerInterface controller;
 
 private final TimerTask task;
 private final Timer timer;
@@ -40,13 +39,6 @@ public FunctionController()
     return view;
     }
 
-/*
-@Override public FunctionControllerInterface getController()
-    {
-    return controller;
-    }
-*/
-
 @Override public void startController()
     {
     model.startModel();
@@ -61,11 +53,8 @@ private class VisualTimerTask extends TimerTask
     {
     @Override public void run()
         {
-        // this moved to benchmark scenario (ActionRun.java)
-        // model.rescaleYmax();
         view.getPanel().repaint();
         }
     }
-
 
 }

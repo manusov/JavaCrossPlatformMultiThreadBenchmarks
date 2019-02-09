@@ -2,6 +2,8 @@
  *
  * Multithread math calculations benchmark. (C)2019 IC Book Labs.
  * Scenario for Console mode.
+ * This is alternative for default GUI mode, run as:
+ * " java -jar <name>.jar console ".
  *
  */
 
@@ -12,12 +14,12 @@ import java.util.Locale;
 import javabench.math.MathScenario;
 
 public class ScenarioConsole 
-{
-private final static int CON_ARRAY_SIZE = 1000000;
-private final static int CON_THREAD_COUNT = 100;
-private final static int CON_EXTERNAL_REPEAT_COUNT = 10;
-private final static int CON_PATTERN_SELECT = 2;
-private final static int CON_OPERAND_SELECT = 0;
+{  // defaults for console mode
+private final static int CON_ARRAY_SIZE = 1000000;       // array size, numbers
+private final static int CON_THREAD_COUNT = 100;         // threads count
+private final static int CON_EXTERNAL_REPEAT_COUNT = 10; // measur. iterations
+private final static int CON_PATTERN_SELECT = 2;         // operation: y=sin(x)
+private final static int CON_OPERAND_SELECT = 0;         // double precision
 
 public void runScenario()
     {
@@ -41,27 +43,30 @@ public void runScenario()
           CON_PATTERN_SELECT, CON_OPERAND_SELECT );
     mathScenario.start();
     int j = -1;
+    
     while ( !mathScenario.getTaskDone() )
         {
         // some wait
         try { sleep(50); } catch ( Exception e ) { }
         // get current progress index
         int i = mathScenario.getIndex();
-        if ( ( i==j )||( i<0 ) ) continue;
-        j=i;
-        // get results
+        if ( ( i == j )||( i < 0 ) ) continue;  // wait for index changed
+        j = i;
+        // get results as arrays
         mtData    = mathScenario.getMopsMultiThread();
         stData    = mathScenario.getMopsSingleThread();
         ratioData = mathScenario.getMopsRatio();
-        // visual results
+        // visual results, actual data selected from arrays by index
         resultLine = String.format( Locale.US ,
                    "  %-4d       %-10.3f      %-10.3f      %-10.3f" , 
                    i+1 , mtData[i] , stData[i] , ratioData[i] );
         System.out.println(resultLine);
         }
+
     // table middle line
     System.out.println
         ( "----------------------------------------------------------" );
+    // calculate statistics, store data at statistics entries
     StatisticEntry mtLog    = StatisticUtil.getStatistic( mtData );
     StatisticEntry stLog    = StatisticUtil.getStatistic( stData );
     StatisticEntry ratioLog = StatisticUtil.getStatistic( ratioData );

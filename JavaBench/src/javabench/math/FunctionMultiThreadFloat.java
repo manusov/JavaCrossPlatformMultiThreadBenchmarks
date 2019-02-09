@@ -6,7 +6,6 @@
  *
  */
 
-
 package javabench.math;
 
 import java.util.concurrent.Callable;
@@ -107,7 +106,7 @@ class WorkerTaskAdd implements Callable<String>
         }
     @Override public String call()  // entry point for run task
         {
-        for(int i=0; i<size; i++)
+        for( int i=0; i<size; i++ )
             {
             array[1][base+i] = array[0][base+i] + 1.0f;
             array[0][base+i] += DXR;                     // prevent speculation
@@ -126,7 +125,7 @@ class WorkerTaskSqrt implements Callable<String>
         }
     @Override public String call()  // entry point for run task
         {
-        for(int i=0; i<size; i++)
+        for( int i=0; i<size; i++ )
             {
             array[1][base+i] = (float) Math.sqrt( array[0][base+i] );
             array[0][base+i] += DXR;                     // prevent speculation
@@ -145,7 +144,7 @@ class WorkerTaskSin implements Callable<String>
         }
     @Override public String call()  // entry point for run task
         {
-        for(int i=0; i<size; i++)
+        for( int i=0; i<size; i++ )
             {
             array[1][base+i] = (float) Math.sin( array[0][base+i] );
             array[0][base+i] += DXR;                     // prevent speculation

@@ -40,19 +40,19 @@ public static void main(String[] args)
     // check command line, select Console or GUI mode
     if ( (args != null )&&( args.length > 0 )&&( args[0] != null ) )
         {
-        if ( args[0].equals(CONSOLE_KEY) ) 
+        if ( args[0].equals( CONSOLE_KEY ) ) 
             {
             consoleMode = true;
             }
         }
         
-    if (consoleMode)
-        {
+    if ( consoleMode )
+        {  // branch for console mode
         ScenarioConsole sc = new ScenarioConsole();
         sc.runScenario();
         }
     else
-        {
+        {  // branch for GUI mode
         ScenarioGui sg = new ScenarioGui();
         sg.runScenario();
         }

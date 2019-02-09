@@ -12,5 +12,5 @@ import javax.swing.JPanel;
 
 public interface FunctionViewInterface 
 {
-public JPanel getPanel();
+public JPanel getPanel();  // get drawings view panel with own paint method
 }

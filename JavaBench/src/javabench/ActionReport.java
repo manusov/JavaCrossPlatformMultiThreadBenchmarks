@@ -14,9 +14,9 @@ import javax.swing.table.*;
 import java.io.*;
 
 public class ActionReport {
-private static final JFileChooser FC = new JFileChooser();
-private static final String FILE_NAME = "report.txt";
-private static FileNameExtensionFilter filter;
+private final JFileChooser FC = new JFileChooser();
+private final String FILE_NAME = "report.txt";
+private FileNameExtensionFilter filter;
     
 // Entry point for RT = "Report this" dialogue method, setup GUI
 public void createDialogRT
@@ -28,15 +28,15 @@ public void createDialogRT
     FC.setDialogTitle("Report - select directory");
     filter = new FileNameExtensionFilter ( "Text files" , "txt" );
     FC.setFileFilter(filter);
-    FC.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    FC.setSelectedFile(new File(FILE_NAME));
+    FC.setFileSelectionMode( JFileChooser.FILES_ONLY );
+    FC.setSelectedFile(new File( FILE_NAME ));
     // (re)start dialogue
     boolean inDialogue = true;
     while(inDialogue)
         {
         int select = FC.showSaveDialog(parentWin);
         // save file
-        if(select==JFileChooser.APPROVE_OPTION)
+        if( select == JFileChooser.APPROVE_OPTION )
             {
             String s1 = FC.getSelectedFile().getPath();
             int x0 = JOptionPane.YES_OPTION;
@@ -80,15 +80,15 @@ public void createDialogRT
 
 // Helper method for convert table model to string
 private static String tableReport (AbstractTableModel atm) {
-    String report="";
-    if (atm==null) { return report; }
+    String report = "";
+    if ( atm == null ) { return report; }
     // Continue if table exist, get geometry
     int m = atm.getColumnCount();
     int n = atm.getRowCount();
     String s;
     int a;
     int[] maxcols = new int[m];
-    int maxcol=13;
+    int maxcol = 13;
     // Get column names lengths
     for (int i=0; i<m; i++)
         { maxcols[i] = atm.getColumnName(i).length(); }
@@ -143,12 +143,12 @@ private static void saveReport
             
     if (status==0)  {
                     JOptionPane.showMessageDialog
-                    (parentWin, "Report saved: " + filePath, "REPORT",
-                    JOptionPane.WARNING_MESSAGE); }
+                    ( parentWin, "Report saved: " + filePath, "REPORT",
+                    JOptionPane.WARNING_MESSAGE ); }
             else    {
                     JOptionPane.showMessageDialog
-                    (parentWin, "Write report failed", "ERROR",
-                    JOptionPane.ERROR_MESSAGE); }
+                    ( parentWin, "Write report failed", "ERROR",
+                    JOptionPane.ERROR_MESSAGE ); }
     }
 
 }

@@ -9,11 +9,11 @@ package javabench.math;
 
 public class MathScenario extends Thread 
 {
-private final int INTERNAL_REPEATS = 100;   // measurement repeats
+private final int INTERNAL_REPEATS = 100;   // internal measurement repeats
 private final int externalRepeats;          // repeats for visualized progress
 private final double operations;            // number of operations for MOPS
 
-private int counter;                        // test phase count
+private int counter;                        // test phase count, for percentage
 private int index;                          // test phase pairs (MT+ST) count
 private boolean taskInterrupt;              // flag for interrupt test
 private boolean taskDone;                   // flag set when test terminated
@@ -96,13 +96,13 @@ public MathScenario
     taskDone = true;                   // termination signal
     }
 
-public double[] getMopsMultiThread()    { return mopsMultiThread;  }
-public double[] getMopsSingleThread()   { return mopsSingleThread; }
-public double[] getMopsRatio()          { return mopsRatio;        }
+public double[] getMopsMultiThread()      { return mopsMultiThread;  }
+public double[] getMopsSingleThread()     { return mopsSingleThread; }
+public double[] getMopsRatio()            { return mopsRatio;        }
 
-public int getCounter()                 { return counter;          }
-public int getIndex()                   { return index;            }
-public void setTaskInterrupt(boolean b) { taskInterrupt = b;       }
-public boolean getTaskDone()            { return taskDone;         }
+public int getCounter()                   { return counter;          }
+public int getIndex()                     { return index;            }
+public void setTaskInterrupt( boolean b ) { taskInterrupt = b;       }
+public boolean getTaskDone()              { return taskDone;         }
 
 }

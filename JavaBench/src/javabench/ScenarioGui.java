@@ -2,6 +2,8 @@
  *
  * Multithread math calculations benchmark. (C)2019 IC Book Labs.
  * Scenario for GUI mode.
+ * This scenario is default, console mode is alternative, it run by:
+ * " java -jar <name>.jar console ".
  *
  */
 
@@ -19,10 +21,10 @@ public void runScenario()
     JDialog.setDefaultLookAndFeelDecorated(true);
     GuiBox application = new GuiBox();
     application.add(application.getApplicationPanel());
-    application.setDefaultCloseOperation(EXIT_ON_CLOSE);
-    application.setLocationRelativeTo(null);
+    application.setDefaultCloseOperation( EXIT_ON_CLOSE );
+    application.setLocationRelativeTo( null );
     application.setSize( application.getApplicationDimension() );
-    application.setVisible(true);
-    application.setResizable(false);
+    application.setResizable( false );
+    application.setVisible( true );
     }
 }

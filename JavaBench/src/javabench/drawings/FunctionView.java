@@ -185,7 +185,6 @@ private class FunctionDrawPanel extends JPanel
             {
             BigDecimal[][] f = model.getFunction();
             int n = model.getCurrentIndexes()[0];
-//          int m = model.getMaximumIndex();
             double px = ( xrightCorrected - xleft ) /
                 ( xmax.doubleValue() - xmin.doubleValue() );
             double py = ( ybottom - ytopCorrected ) /

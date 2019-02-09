@@ -2,6 +2,7 @@
  *
  * Multithread math calculations benchmark. (C)2019 IC Book Labs.
  * Handler for "Run" and "Stop" buttons. Test executed at separate thread.
+ * Measurement iterations executed in this class.
  *
  */
 
@@ -158,17 +159,17 @@ public static boolean getRunning()
         if ( index >= 0 ) 
             {
             array1 = mathScenario.getMopsMultiThread();
-            medianIndexes[0] = updateLinesStatistics(array1, index, 0);
+            medianIndexes[0] = updateLinesStatistics( array1, index, 0 );
             array2 = mathScenario.getMopsSingleThread();
-            medianIndexes[1] = updateLinesStatistics(array2, index, 1);
+            medianIndexes[1] = updateLinesStatistics( array2, index, 1 );
             array3 = mathScenario.getMopsRatio();
-            medianIndexes[2] = updateLinesStatistics(array3, index, 2);
+            medianIndexes[2] = updateLinesStatistics( array3, index, 2 );
             }
         // revisual main frame of application
         percentage = weight * mathScenario.getCounter();
         progressModel.setValue( (int)percentage );
         progressBar.setString ( progressModel.getValue() + "%" );
-        tableModel.setRowsValues(rowsValues);
+        tableModel.setRowsValues( rowsValues );
         tableModel.fireTableDataChanged();
         // revisual benchmark drawings frame of application, Y=F(X)
         if ( ( index != backIndex ) && ( index >= 0 ) )
@@ -190,16 +191,16 @@ public static boolean getRunning()
     
     
     // write "skipped" if interrupted by user click "Stop"
-    if(interrupted)
+    if( interrupted )
         {
-        for(int i=0; i<n; i++)
+        for( int i=0; i<n; i++ )
             {
-            for(int j=1; j<m; j++)
+            for( int j=1; j<m; j++ )
                 {
                 rowsValues[i][j] = "skipped";
                 }
             }
-        tableModel.setRowsValues(rowsValues);
+        tableModel.setRowsValues( rowsValues );
         tableModel.fireTableDataChanged();
         }
     // end progress visual cycle
@@ -220,7 +221,7 @@ public static boolean getRunning()
         ( (JComponent) uitemp ).revalidate();
         }
     // re-enable application window close after test
-    benchFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    benchFrame.setDefaultCloseOperation( EXIT_ON_CLOSE );
     // output results to log
     if (array1 != null ) logValues[0] = array1;
     if (array2 != null ) logValues[1] = array2;
@@ -237,7 +238,7 @@ public static boolean getRunning()
     running = false;                                    // EXIT FROM CRITICAL 
     }
 
-// Handler for "Stop" button, redefined from "Run" button
+// Handler for "Stop" button, redefined from "Run" button when test in-progress
 private class LstStop implements ActionListener
     {
     @Override public void actionPerformed (ActionEvent e)

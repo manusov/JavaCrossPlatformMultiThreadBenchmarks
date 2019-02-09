@@ -1,7 +1,8 @@
 /*
  *
  * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Application GUI panel with parameters getters and buttons events listeners.
+ * Application GUI panel with parameters getters and
+ * buttons events listeners: Run, About, Report, Cancle, Draw.
  *
  */
 
@@ -14,7 +15,8 @@ import javabench.drawings.ActionDraw;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class GuiBox extends JFrame {
+public class GuiBox extends JFrame 
+{
 
 // sizes of GUI elements
 private final static Dimension SIZE_WINDOW   = new Dimension (400, 390);
@@ -110,13 +112,13 @@ public GuiBox() {
     sl = new SpringLayout();
     p = new JPanel(sl);
     benchmarkTableModel = new BTM();
-    table = new JTable(benchmarkTableModel);
-    sp = new JScrollPane(table);
+    table = new JTable( benchmarkTableModel );
+    sp = new JScrollPane( table );
     tableRenderer = new DefaultTableCellRenderer();
-    tableRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+    tableRenderer.setHorizontalAlignment( SwingConstants.CENTER );
     for ( int i=0; i<table.getColumnCount(); i++ )
         { 
-        table.getColumnModel().getColumn(i).setCellRenderer(tableRenderer);
+        table.getColumnModel().getColumn(i).setCellRenderer( tableRenderer );
         }
     l1 = new JLabel("Array");
     l2 = new JLabel("Threads");

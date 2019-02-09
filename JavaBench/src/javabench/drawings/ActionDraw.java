@@ -54,7 +54,6 @@ public void start()
         setSize( new Dimension ( 740, 540 ) );
         setVisible( true );
         setResizable( true );
-        // controller.startController();
         }
     }
 
@@ -64,7 +63,6 @@ private class ChildWindowListener extends WindowAdapter
     @Override public void windowClosing( WindowEvent e )
         {
         childActive = false;
-        // controller.stopController();
         }
     }
     

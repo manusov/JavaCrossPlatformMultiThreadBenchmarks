@@ -18,9 +18,9 @@ import java.net.URISyntaxException;
 
 public class ActionAbout {
 
-private final static Color LOGO_COLOR = new Color(143,49,40);
-private final static Dimension BUTTON_HTTP_SIZE   = new Dimension (180, 25);
-private final static Dimension BUTTON_CANCEL_SIZE = new Dimension (89, 25);
+private final Color LOGO_COLOR = new Color(143,49,40);
+private final Dimension BUTTON_HTTP_SIZE   = new Dimension (180, 25);
+private final Dimension BUTTON_CANCEL_SIZE = new Dimension (89, 25);
     
 // Entry point for "About" dialogue method, setup GUI
 public JDialog createDialog
@@ -40,8 +40,8 @@ public JDialog createDialog
     catch (Exception e) { }
     JLabel l2 = new JLabel  ( About.getLongName()   );
     JLabel l3 = new JLabel  ( About.getVendorName() );
-    l2.setForeground(LOGO_COLOR);
-    l3.setForeground(LOGO_COLOR);
+    l2.setForeground( LOGO_COLOR );
+    l3.setForeground( LOGO_COLOR );
     Font font1 = new Font ( "Verdana", Font.PLAIN, 12 );
     l2.setFont(font1);
     l3.setFont(font1);
@@ -69,15 +69,15 @@ public JDialog createDialog
     p1.add(b1);
     p1.add(b2);
     // Action listener for web button
-    b1.addActionListener(new ActionListener() {
-    @Override public void actionPerformed(ActionEvent ae1) 
-        { if(Desktop.isDesktopSupported())
+    b1.addActionListener( new ActionListener() {
+    @Override public void actionPerformed( ActionEvent e ) 
+        { if( Desktop.isDesktopSupported() )
             { try { Desktop.getDesktop().browse(new URI(sHttp)); }
             catch (URISyntaxException | IOException ex1) 
                 { System.out.println(ex1); } } } } );
     // Action listener for cancel button
-    b2.addActionListener(new ActionListener() {
-    @Override public void actionPerformed(ActionEvent e) 
+    b2.addActionListener( new ActionListener() {
+    @Override public void actionPerformed( ActionEvent e ) 
         { dialog.dispose(); } } );
     // Visual window and return
     dialog.setContentPane(p1);

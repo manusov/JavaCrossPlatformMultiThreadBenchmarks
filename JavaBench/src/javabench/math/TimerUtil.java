@@ -1,7 +1,11 @@
 /*
  *
  * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Static class with timer library: interval start, interval end, get delta time.
+ * Static class with timer library: 
+ * interval start, interval end, get delta time.
+ * Note. Timer units is nanoseconds, but this don't mean units = nanoseconds,
+ * resolution units can be up to some milliseconds.
+ * Real timer resolution is hardware- and JVM-specific.
  *
  */
 
@@ -23,8 +27,8 @@ protected static void timerStart()
 protected static double timerStop()
     {
     long t = System.nanoTime();
-    double microseconds = t - timer;
-    microseconds /= 1000.0;
+    double microseconds = t - timer;  // delta time in nanoseconds
+    microseconds /= 1000.0;           // delta time in microseconds
     return microseconds;
     }
 

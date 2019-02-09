@@ -6,7 +6,6 @@
  *
  */
 
-
 package javabench.math;
 
 public class FunctionSingleThreadDouble extends FunctionThread
@@ -83,7 +82,7 @@ private void tabulateAdd()
     {
     for( int j=0; j<r; j++ )
         {
-        for(int i=0; i<n; i++)
+        for( int i=0; i<n; i++ )
             {
             array[1][i] = array[0][i] + 1.0;   // set y[i] = x[i] + 1.0
             array[0][i] += DXR;                // prevent speculation
@@ -95,7 +94,7 @@ private void tabulateSqrt()
     {
     for( int j=0; j<r; j++ )
         {
-        for(int i=0; i<n; i++)
+        for( int i=0; i<n; i++ )
             {
             array[1][i] = Math.sqrt( array[0][i] );  // set y[i] = sin ( x[i] )
             array[0][i] += DXR;                      // prevent speculation
@@ -107,7 +106,7 @@ private void tabulateSin()
     {
     for( int j=0; j<r; j++ )
         {
-        for(int i=0; i<n; i++)
+        for( int i=0; i<n; i++ )
             {
             array[1][i] = Math.sin( array[0][i] );   // set y[i] = sin ( x[i] )
             array[0][i] += DXR;                      // prevent speculation

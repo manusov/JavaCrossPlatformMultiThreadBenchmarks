@@ -10,9 +10,8 @@ package javabench.drawings;
 
 public interface FunctionControllerInterface 
 {
-public FunctionModelInterface getModel();
-public FunctionViewInterface getView();
-// public FunctionControllerInterface getController();
-public void startController();
-public void stopController();
+public FunctionModelInterface getModel(); // get connected model = function
+public FunctionViewInterface getView();   // get connected view = panel
+public void startController();  // start controller retranslated to start model
+public void stopController();   // stop controller retranslated to stop model
 }

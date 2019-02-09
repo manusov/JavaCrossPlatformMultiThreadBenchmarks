@@ -2,6 +2,7 @@
  *
  * Multithread math calculations benchmark. (C)2019 IC Book Labs.
  * BTM, Benchmark Table Model, used for results visual and report.
+ * Unify data representation by AbstractTableModel.
  *
  */
 

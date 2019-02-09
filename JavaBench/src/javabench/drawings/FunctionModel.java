@@ -12,23 +12,22 @@ import java.math.BigDecimal;
 
 public class FunctionModel implements FunctionModelInterface
 {
-// private final FunctionControllerInterface controller;
+
 private BigDecimal[][] function;
+
 private final int DEFAULT_SCALE_BASE  = 1000;
 private final int DEFAULT_SCALE_DELTA = 100;
 private final int DEFAULT_MAX_COUNT = 100;
+
 private int scale;
-private int delta;
 private int maxCount;
 private int currentCount;
 
 public FunctionModel( FunctionControllerInterface x )
     {
     scale = DEFAULT_SCALE_BASE;
-    delta = DEFAULT_SCALE_DELTA;
     maxCount = DEFAULT_MAX_COUNT;
     currentCount = 0;
-    // controller = x;
     rescaleXmax( maxCount );
     }
 
@@ -50,7 +49,6 @@ public FunctionModel( FunctionControllerInterface x )
 @Override public void startModel() 
     {
     scale = DEFAULT_SCALE_BASE;
-    delta = DEFAULT_SCALE_DELTA;
     currentCount = 0;
     }
 
@@ -124,7 +122,6 @@ public FunctionModel( FunctionControllerInterface x )
         {
         function[0][i] = function[1][i] = function[2][i] = a;
         }
-    // currentCount = 0;
     }
 
 @Override public void rescaleYmax()
