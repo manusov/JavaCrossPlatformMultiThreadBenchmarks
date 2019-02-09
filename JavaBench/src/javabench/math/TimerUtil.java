@@ -1,6 +1,6 @@
 /*
  *
- * Multithread math calculations benchmark. (C)2018 IC Book Labs.
+ * Multithread math calculations benchmark. (C)2019 IC Book Labs.
  * Static class with timer library: interval start, interval end, get delta time.
  *
  */

@@ -1,6 +1,6 @@
 /*
  *
- * Multithread math calculations benchmark. (C)2018 IC Book Labs.
+ * Multithread math calculations benchmark. (C)2019 IC Book Labs.
  * RTM, Report Table Model, used for options values and log add to report.
  *
  */

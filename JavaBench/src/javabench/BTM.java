@@ -1,6 +1,6 @@
 /*
  *
- * Multithread math calculations benchmark. (C)2018 IC Book Labs.
+ * Multithread math calculations benchmark. (C)2019 IC Book Labs.
  * BTM, Benchmark Table Model, used for results visual and report.
  *
  */

@@ -1,6 +1,6 @@
 /*
  *
- * Multithread math calculations benchmark. (C)2018 IC Book Labs.
+ * Multithread math calculations benchmark. (C)2019 IC Book Labs.
  * Application GUI panel with parameters getters and buttons events listeners.
  *
  */
@@ -10,6 +10,7 @@ package javabench;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javabench.drawings.ActionDraw;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -71,12 +72,13 @@ private final JLabel l1, l2, l3, l4, l5, l6;
 private final JComboBox c1, c2, c3, c4, c5;
 private final JProgressBar pb;
 private final DefaultBoundedRangeModel rangeModel;
-private final JButton b1, b2, b3, b4;
+private final JButton b1, b2, b3, b4, b5;
 
 private final LstRun    lst1;    // buttons events listeners
 private final LstAbout  lst2;
 private final LstReport lst3;
 private final LstCancel lst4;
+private final LstDraw   lst5;
 
 public final Object thisFrame = this;  // frame for GUI elements positioning
 
@@ -101,6 +103,8 @@ private static final int NUM_LOG = 3;        // 0=MT, 1=ST, 2=Ratio
 private static final int NUM_OPTIONS = 5;    // Array Size, Threads Count
                                              // Repeats count, Operation,
                                              // Operand size
+private final ActionDraw childFrame;
+
 public GuiBox() {
     super( About.getShortName() );
     sl = new SpringLayout();
@@ -176,18 +180,23 @@ public GuiBox() {
     b2 = new JButton("About");
     b3 = new JButton("Report");
     b4 = new JButton("Cancel");
+    b5 = new JButton("Draw");
+    
     b1.setPreferredSize(SIZE_RUN);
     b2.setPreferredSize(SIZE_BUTTON);
     b3.setPreferredSize(SIZE_BUTTON);
     b4.setPreferredSize(SIZE_BUTTON);
+    b5.setPreferredSize(SIZE_RUN);
     lst1 = new LstRun();
     lst2 = new LstAbout();
     lst3 = new LstReport();
     lst4 = new LstCancel();
+    lst5 = new LstDraw();
     b1.addActionListener(lst1);
     b2.addActionListener(lst2);
     b3.addActionListener(lst3);
     b4.addActionListener(lst4);
+    b5.addActionListener(lst5);
     // start layout setup, results table
     sl.putConstraint ( SpringLayout.NORTH, sp, AY1, SpringLayout.NORTH, p );
     sl.putConstraint ( SpringLayout.SOUTH, sp, AY2, SpringLayout.SOUTH, p );
@@ -230,6 +239,9 @@ public GuiBox() {
     sl.putConstraint ( SpringLayout.EAST,  b3,  CX2, SpringLayout.WEST,  b4 );
     sl.putConstraint ( SpringLayout.SOUTH, b2,  CY1, SpringLayout.SOUTH, p  );
     sl.putConstraint ( SpringLayout.EAST,  b2,  CX2, SpringLayout.WEST,  b3 );
+    // draw button, located above run button
+    sl.putConstraint ( SpringLayout.SOUTH, b5,   -3, SpringLayout.NORTH, b1 );
+    sl.putConstraint ( SpringLayout.WEST,  b5,    0, SpringLayout.WEST,  b1 );
     // add all to panel
     p.add(sp);
     p.add(l1);
@@ -248,6 +260,9 @@ public GuiBox() {
     p.add(b2);
     p.add(b3);
     p.add(b4);
+    p.add(b5);
+    // pre-initializing drawings window support
+    childFrame = new ActionDraw( (JFrame)thisFrame );
     }
     
 public Dimension getApplicationDimension()
@@ -304,7 +319,8 @@ private class LstRun implements ActionListener
                   b1 , lst1 ,
                   disabledComponents , (JFrame)thisFrame ,
                   arraySize , threadsCount , repeatsCount , m , d ,
-                  logValues , logTags );
+                  logValues , logTags ,
+                  childFrame );
             aRun.start();
             }
         }
@@ -411,6 +427,15 @@ private class LstCancel implements ActionListener
     @Override public void actionPerformed (ActionEvent e)
         {
         System.exit(0);
+        }
+    }
+
+// DRAW button
+private class LstDraw implements ActionListener
+    {
+    @Override public void actionPerformed (ActionEvent e)
+        {
+        childFrame.start();
         }
     }
 

@@ -1,6 +1,6 @@
 /*
  *
- * Multithread math calculations benchmark. (C)2018 IC Book Labs.
+ * Multithread math calculations benchmark. (C)2019 IC Book Labs.
  * Application info.
  *
  */
@@ -9,8 +9,8 @@ package javabench;
 
 public class About {
 
-private final static String VERSION_NAME = "v0.12.02";
-private final static String VENDOR_NAME  = "(C)2018 IC Book Labs";
+private final static String VERSION_NAME = "v0.13.00";
+private final static String VENDOR_NAME  = "(C)2019 IC Book Labs";
 private final static String SHORT_NAME   = "Math Benchmark " + VERSION_NAME;
 private final static String LONG_NAME    = "Java " + SHORT_NAME;
 private final static String WEB_SITE     = "http://icbook.com.ua";

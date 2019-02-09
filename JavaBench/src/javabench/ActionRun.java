@@ -1,6 +1,6 @@
 /*
  *
- * Multithread math calculations benchmark. (C)2018 IC Book Labs.
+ * Multithread math calculations benchmark. (C)2019 IC Book Labs.
  * Handler for "Run" and "Stop" buttons. Test executed at separate thread.
  *
  */
@@ -9,6 +9,10 @@ package javabench;
 
 import static java.lang.Thread.sleep;
 import java.awt.event.*;
+import java.math.BigDecimal;
+import javabench.drawings.ActionDraw;
+import javabench.drawings.FunctionControllerInterface;
+import javabench.drawings.FunctionModelInterface;
 import javax.swing.*;
 import static javax.swing.JFrame.*;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
@@ -40,6 +44,8 @@ private final boolean [][] logTags;
 private final int indexLimit;
 private boolean lastRequired;
 
+private final ActionDraw childFrame;
+
 public ActionRun
     ( BTM tm , DefaultBoundedRangeModel dbrm , JProgressBar pb ,
       JButton rsb , ActionListener rsl ,
@@ -50,7 +56,9 @@ public ActionRun
       int externalRepeatCount, 
       int patternSelect ,
       int operandSize ,
-      double[][] lv , boolean[][] lt )
+      double[][] lv , boolean[][] lt ,
+      ActionDraw ad )
+            
     {
     // create target operation class
     mathScenario = new MathScenario
@@ -73,6 +81,8 @@ public ActionRun
     
     indexLimit = externalRepeatCount - 1;
     lastRequired = true;
+    
+    childFrame = ad;
     
     }
 
@@ -123,8 +133,18 @@ public static boolean getRunning()
             rowsValues[i][j] = "-";
             }
         }
-    // start calculations
+    
+
+    // --- start calculations ---
+    FunctionControllerInterface controller = childFrame.getController();
+    FunctionModelInterface model = controller.getModel();
+    controller.startController();
+    model.rescaleXmax( indexLimit + 1 );
+    BigDecimal[] value = new BigDecimal[3];
+    value[0] = value[1] = value[2] = new BigDecimal(0);
+    // model.updateValue( value );
     mathScenario.start();
+    int backIndex = -2;
     // start progress visual cycle
     while ( ( !mathScenario.getTaskDone() ) || lastRequired )
         {
@@ -144,15 +164,31 @@ public static boolean getRunning()
             array3 = mathScenario.getMopsRatio();
             medianIndexes[2] = updateLinesStatistics(array3, index, 2);
             }
-        // revisual
+        // revisual main frame of application
         percentage = weight * mathScenario.getCounter();
         progressModel.setValue( (int)percentage );
         progressBar.setString ( progressModel.getValue() + "%" );
         tableModel.setRowsValues(rowsValues);
         tableModel.fireTableDataChanged();
-        // some wait
+        // revisual benchmark drawings frame of application, Y=F(X)
+        if ( ( index != backIndex ) && ( index >= 0 ) )
+            {
+            backIndex = index;
+            double vs = mathScenario.getMopsSingleThread()[index] ;
+            double vm = mathScenario.getMopsMultiThread()[index];
+            value[0] = new BigDecimal( index );
+            value[1] = new BigDecimal( vs );
+            value[2] = new BigDecimal( vm );
+            model.updateValue( value );
+            model.rescaleYmax();
+            }
+        // some wait reduce CPU/JVM utilization
         try { sleep(50); } catch ( Exception e ) { }
         }
+    controller.stopController();
+    // --- end calculations ---
+    
+    
     // write "skipped" if interrupted by user click "Stop"
     if(interrupted)
         {
@@ -167,6 +203,7 @@ public static boolean getRunning()
         tableModel.fireTableDataChanged();
         }
     // end progress visual cycle
+    
     percentage = 100.0;
     progressModel.setValue( (int)percentage );
     progressBar.setString ( progressModel.getValue() + "%" );

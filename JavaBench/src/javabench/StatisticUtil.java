@@ -1,7 +1,11 @@
 /*
  *
- * Multithread math calculations benchmark. (C)2018 IC Book Labs.
+ * Multithread math calculations benchmark. (C)2019 IC Book Labs.
  * Static class with statistic library: min, max, median, average for arrays.
+ * Note some yet unused methods disabled.
+ * Note array ordering software method don't replaced to java.util.Arrays.sort
+ * because service array with elements indexes required.
+ * Update carefully.
  *
  */
 
@@ -11,12 +15,13 @@ public class StatisticUtil
 {
 
 // find minimum value of array
-
+/*
 protected static double findMin( double[] array )
     {
     return findMin( array, array.length );
     }
-
+*/
+    
 protected static double findMin( double[] array, int n )
     {
     double min = Double.NaN;
@@ -32,11 +37,12 @@ protected static double findMin( double[] array, int n )
     }
 
 // find maximum value of array
-
+/*
 protected static double findMax( double[] array )
     {
     return findMax( array, array.length );
     }
+*/
 
 protected static double findMax( double[] array, int n )
     {
@@ -75,7 +81,7 @@ protected static double findAverage( double[] array, int n )
     }
 
 // find median value of array
-
+/*
 protected static double findMedian( double[] array )
     {
     return findMedian( array, array.length );
@@ -119,7 +125,8 @@ protected static double findMedian( double[] array, int n )
         }
     return median;
     }
-    
+*/
+
 // find median value of array, additionally return indexes
 
 protected static MedianEntry findMedianIndex( double[] array )
@@ -154,7 +161,8 @@ protected static MedianEntry findMedianIndex( double[] arrayIn, int n )
         }
     else if ( ( array != null ) && ( n > 1 ) && ( n <= array.length ) )
         {
-        // sorting array
+
+        // sorting array, support values and indexes arrays
         boolean flag = true;
         while (flag)
             {
@@ -163,11 +171,11 @@ protected static MedianEntry findMedianIndex( double[] arrayIn, int n )
                 {
                 if ( array[i] > array[i+1] )
                     {
-                    double temp1 = array[i];
+                    double temp1 = array[i];     // values array support
                     array[i] = array[i+1];
                     array[i+1] = temp1;
                     
-                    int temp2 = service[i];
+                    int temp2 = service[i];      // service array support
                     service[i] = service[i+1];
                     service[i+1] = temp2;
                     
@@ -175,6 +183,11 @@ protected static MedianEntry findMedianIndex( double[] arrayIn, int n )
                     }
                 }
             }
+
+        // Can't sorting by array utilites, because
+        // service array with elements indexes generation required.
+        // Arrays.sort( array, 0, n );
+            
         // get median from sorted array
         int i = n/2;
         if ( n % 2 == 0 )
@@ -209,12 +222,13 @@ protected static MedianEntry findMedianIndex( double[] arrayIn, int n )
     return new MedianEntry( median, median1, median2, median3, a, b, c );
     }
 
+
 protected static StatisticEntry getStatistic( double[] array )
     {
     return getStatistic( array, array.length );
     }
 
-protected static  StatisticEntry getStatistic( double[] array, int n )
+protected static StatisticEntry getStatistic( double[] array, int n )
     {
     MedianEntry medianEntry = findMedianIndex( array, n );
     double average = findAverage( array, n );
