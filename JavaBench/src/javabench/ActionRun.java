@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import javabench.drawings.ActionDraw;
 import javabench.drawings.FunctionControllerInterface;
 import javabench.drawings.FunctionModelInterface;
+import javabench.drawings.FunctionViewInterface;
 import javax.swing.*;
 import static javax.swing.JFrame.*;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
@@ -139,7 +140,10 @@ public static boolean getRunning()
     // --- start calculations ---
     FunctionControllerInterface controller = childFrame.getController();
     FunctionModelInterface model = controller.getModel();
-    controller.startController();
+    FunctionViewInterface view = controller.getView();
+    JPanel drawPanel = view.getPanel();
+    // controller.startController();
+    model.startModel();
     model.rescaleXmax( indexLimit + 1 );
     BigDecimal[] value = new BigDecimal[3];
     value[0] = value[1] = value[2] = new BigDecimal(0);
@@ -180,13 +184,15 @@ public static boolean getRunning()
             value[0] = new BigDecimal( index );
             value[1] = new BigDecimal( vs );
             value[2] = new BigDecimal( vm );
-            model.updateValue( value );
-            model.rescaleYmax();
+            model.updateValue( value );       // send next point (X,Y)
+            model.rescaleYmax();              // change scale if required
+            drawPanel.repaint();              // synchronous revisual
             }
         // some wait reduce CPU/JVM utilization
         try { sleep(50); } catch ( Exception e ) { }
         }
-    controller.stopController();
+    // controller.stopController();
+    model.stopModel();
     // --- end calculations ---
     
     

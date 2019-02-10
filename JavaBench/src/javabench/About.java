@@ -12,7 +12,7 @@ package javabench;
 public class About 
 {
 
-private final static String VERSION_NAME = "v0.13.01";
+private final static String VERSION_NAME = "v0.13.02";
 private final static String VENDOR_NAME  = "(C)2019 IC Book Labs";
 private final static String SHORT_NAME   = "Math Benchmark " + VERSION_NAME;
 private final static String LONG_NAME    = "Java " + SHORT_NAME;

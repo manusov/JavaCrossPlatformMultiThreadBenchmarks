@@ -1,6 +1,12 @@
 /*
+ *
+ * Multithread math calculations benchmark. (C)2019 IC Book Labs.
+ * Main module with application entry point.
+ *
+ */
 
-UNDER CONSTRUCTION
+
+/*
 
 TODO:
 1)  + Run-Stop button. Output "skipped".
@@ -18,15 +24,17 @@ TODO:
 12) + Comments. Remove old locked code.
 13) + Verify all.
 14) + Assign v0.01 version id.
+OK.
+
+10.02.2019. v0.13.02
+1) Remove empty transit methods startController(), stopController(),
+   change to direct use startModel(), stopModel().
+2) Change asynchronous visualization to synchronous,
+   remove timer at FunctionController.java , add repaint at ActionRun.java.
+OK.
 
 */
 
-/*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Main module with application entry point.
- *
- */
 
 package javabench;
 
