@@ -13,8 +13,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.*;
 import java.io.*;
 
-public class ActionReport {
-private final JFileChooser FC = new JFileChooser();
+public class ActionReport 
+{
+// field FC must be static for remember path    
+private final static JFileChooser FC = new JFileChooser();
 private final String FILE_NAME = "report.txt";
 private FileNameExtensionFilter filter;
     
@@ -25,7 +27,7 @@ public void createDialogRT
         String longName , String vendorVersion ,
         String logName , AbstractTableModel atm3 )
     {
-    FC.setDialogTitle("Report - select directory");
+    FC.setDialogTitle( "Report - select directory" );
     filter = new FileNameExtensionFilter ( "Text files" , "txt" );
     FC.setFileFilter(filter);
     FC.setFileSelectionMode( JFileChooser.FILES_ONLY );
@@ -62,13 +64,19 @@ public void createDialogRT
                         vendorVersion + "\r\n\r\n";
             String s3 = "" , s4 = "" , s5 = "" , s6 = "";
             // make and save report
-            if ( atm1 != null ) { s3 = tableReport(atm1); }
-            if ( atm2 != null ) { s4 = tableReport(atm2); }
+            if ( atm1 != null ) { s3 = tableReport( atm1 ); }
+            if ( atm2 != null ) { s4 = tableReport( atm2 ); }
             // log support
             if ( logName != null ) { s5 = logName; }
-            if ( atm3 != null )    { s6 = tableReport(atm3); }
+            if ( atm3 != null )    { s6 = tableReport( atm3 ); }
             // save report
-            saveReport( parentWin, s1, s2 + s3 + "\r\n" + s4 + s5 + s6 );
+            StringBuilder sb = new StringBuilder( s2 );
+            sb.append( s3 );
+            sb.append( "\r\n" );
+            sb.append( s4 );
+            sb.append( s5 );
+            sb.append( s6 );
+            saveReport( parentWin, s1, sb.toString() );
             inDialogue = false;
             }  
         else
@@ -79,9 +87,9 @@ public void createDialogRT
     }        // End of method
 
 // Helper method for convert table model to string
-private static String tableReport (AbstractTableModel atm) {
-    String report = "";
-    if ( atm == null ) { return report; }
+private static String tableReport ( AbstractTableModel atm ) {
+    StringBuilder report = new StringBuilder ( "" );
+    if ( atm == null ) { return report.toString(); }
     // Continue if table exist, get geometry
     int m = atm.getColumnCount();
     int n = atm.getRowCount();
@@ -104,42 +112,51 @@ private static String tableReport (AbstractTableModel atm) {
         }
     for ( int i=0; i<maxcols.length; i++ ) { maxcol += maxcols[i]; }
     // Write table up
-    for (int i=0; i<m; i++)
+    for ( int i=0; i<m; i++ )
         {
-        s = atm.getColumnName(i);
-        report = report + " " + s;
+        s = atm.getColumnName( i );
+        report.append( " " );
+        report.append( s );
+        
         a = maxcols[i] - s.length() + 1;
-        for (int k=0; k<a; k++) { report = report + " "; }
+        for ( int k=0; k<a; k++ ) { report.append( " " ); }
         }
     // Write horizontal line
-    report = report + "\r\n";
-    for (int i=0; i<maxcol; i++) { report = report + "-"; }
-    report = report + "\r\n";
+    report.append( "\r\n" );
+    for ( int i=0; i<maxcol; i++ ) { report.append( "-" ); }
+    report.append( "\r\n" );
     // Write table content
     for (int j=0; j<n; j++)       // this cycle for rows , n = rows count
         {
         for (int i=0; i<m; i++)   // this cycle for columns , m = columns count
             {
             s = " " + (String)atm.getValueAt(j,i);
-            report = report + s;
+            report.append( s );
             a = maxcols[i] - s.length() + 2;
-            for (int k=0; k<a; k++) { report = report + " "; }
+            for ( int k=0; k<a; k++ ) { report.append( " " ); }
             }
-            report = report + "\r\n";    
+            report.append( "\r\n" );
         }
     // Write horizontal line
-    for (int i=0; i<maxcol; i++) { report = report + "-"; }
-    report = report + "\r\n";
+    for ( int i=0; i<maxcol; i++ ) { report.append( "-" ); }
+    report.append( "\r\n" );
     // Return
-    return report; }
+    return report.toString();
+    }
 
 // Helper method for save string to file and visual status
 private static void saveReport
                    ( JFrame parentWin, String filePath, String fileData ) {
     int status=0;
-    try ( FileWriter writer = new FileWriter(filePath, false) )
-        { writer.write(fileData); writer.flush(); }
-    catch(Exception ex) { status=1; }
+    try ( FileWriter writer = new FileWriter( filePath, false ) )
+        { 
+        writer.write( fileData );
+        writer.flush(); 
+        }
+    catch( Exception ex )
+        {
+        status=1; 
+        }
             
     if (status==0)  {
                     JOptionPane.showMessageDialog

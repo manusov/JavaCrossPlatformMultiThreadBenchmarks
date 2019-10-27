@@ -17,10 +17,10 @@ public class ScenarioGui
 {
 public void runScenario()
     {
-    JFrame.setDefaultLookAndFeelDecorated(true);
-    JDialog.setDefaultLookAndFeelDecorated(true);
+    JFrame.setDefaultLookAndFeelDecorated( true );
+    JDialog.setDefaultLookAndFeelDecorated( true );
     GuiBox application = new GuiBox();
-    application.add(application.getApplicationPanel());
+    application.add( application.getApplicationPanel() );
     application.setDefaultCloseOperation( EXIT_ON_CLOSE );
     application.setLocationRelativeTo( null );
     application.setSize( application.getApplicationDimension() );

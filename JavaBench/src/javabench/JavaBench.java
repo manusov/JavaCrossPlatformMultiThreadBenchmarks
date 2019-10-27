@@ -43,7 +43,7 @@ public class JavaBench
 private final static String  CONSOLE_KEY = "console";
 private static boolean       consoleMode    = false;
 
-public static void main(String[] args) 
+public static void main( String[] args ) 
     {
     // check command line, select Console or GUI mode
     if ( (args != null )&&( args.length > 0 )&&( args[0] != null ) )
@@ -53,7 +53,7 @@ public static void main(String[] args)
             consoleMode = true;
             }
         }
-        
+    // run selected scenario: console or GUI    
     if ( consoleMode )
         {  // branch for console mode
         ScenarioConsole sc = new ScenarioConsole();

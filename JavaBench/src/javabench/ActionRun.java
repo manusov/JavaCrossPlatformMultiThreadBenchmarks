@@ -145,6 +145,7 @@ public static boolean getRunning()
     // controller.startController();
     model.startModel();
     model.rescaleXmax( indexLimit + 1 );
+    drawPanel.repaint();
     BigDecimal[] value = new BigDecimal[3];
     value[0] = value[1] = value[2] = new BigDecimal(0);
     // model.updateValue( value );
