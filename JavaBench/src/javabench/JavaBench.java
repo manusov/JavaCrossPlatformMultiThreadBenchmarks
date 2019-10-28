@@ -1,47 +1,15 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Main module with application entry point.
- *
+ Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+ Main module with application entry point.
  */
-
-
-/*
-
-TODO:
-1)  + Run-Stop button. Output "skipped".
-2)  + Output "-" before first valid result, no "NaN". Why "NaN" visualized?
-3)  + Improve numbers of iterations (array size) for accurate measure.
-4)  + Statistics bugs.
-5)  + Make helper method for rows values.
-6)  + Log: LogData class: arrays, medians, averages, mins, maxs, median marks.
-7)  + Median "always middle" bug.
-8)  + Bug with 2/3 medians.
-9)  + Bug with cannot re-run.
-10) + Tuning modes by results validity. Verify MOPS results, calculate.
-11) + Method blankArray() internal repeats. Prevent table store and speculation.
-11) + Refactor. Median method must not sort array, make copy at MEDIAN method.
-12) + Comments. Remove old locked code.
-13) + Verify all.
-14) + Assign v0.01 version id.
-OK.
-
-10.02.2019. v0.13.02
-1) Remove empty transit methods startController(), stopController(),
-   change to direct use startModel(), stopModel().
-2) Change asynchronous visualization to synchronous,
-   remove timer at FunctionController.java , add repaint at ActionRun.java.
-OK.
-
-*/
-
 
 package javabench;
 
 public class JavaBench 
 {
 private final static String  CONSOLE_KEY = "console";
-private static boolean       consoleMode    = false;
+private static boolean       consoleMode = false;
 
 public static void main( String[] args ) 
     {

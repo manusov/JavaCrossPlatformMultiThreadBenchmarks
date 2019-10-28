@@ -1,11 +1,10 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Package for support functions Y=F(X) drawings.
- * Model interface for MVC (Model, View, Controller) pattern.
- * Note. Start/Stop model is not same as Start/Stop benchmarking process.
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Package for support functions Y=F(X) drawings.
+Model interface for MVC (Model, View, Controller) pattern.
+Note. Start/Stop model is not same as Start/Stop benchmarking process.
+*/
 
 package javabench.drawings;
 
@@ -35,5 +34,4 @@ public BigDecimal getYbigUnits();      // get big graduation for Y axis
 public void rescaleXmax( int x );        // set x-scale by input x
 public void rescaleYmax();               // set y-scale automatically by values
 public void updateValue( BigDecimal[] x );  // add new element to array
-
 }

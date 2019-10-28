@@ -1,29 +1,17 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Static class with statistic library: min, max, median, average for arrays.
- * Note some yet unused methods disabled.
- * Note array ordering software method don't replaced to java.util.Arrays.sort
- * because service array with elements indexes required.
- * Update carefully.
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Static class with statistic library: min, max, median, average for arrays.
+Note array ordering software method don't replaced to java.util.Arrays.sort
+because service array with elements indexes required.
+*/
 
 package javabench;
 
-public class StatisticUtil 
+class StatisticUtil 
 {
-
-// find minimum value of array
-/*
-protected static double findMin( double[] array )
-    {
-    return findMin( array, array.length );
-    }
-*/
-    
 // method returns minimum of input array, selected part n elements
-protected static double findMin( double[] array, int n )
+private static double findMin( double[] array, int n )
     {
     double min = Double.NaN;
     if ( ( array != null ) && ( n > 0 ) && ( n <= array.length ) )
@@ -37,16 +25,8 @@ protected static double findMin( double[] array, int n )
     return min;
     }
 
-// find maximum value of array
-/*
-protected static double findMax( double[] array )
-    {
-    return findMax( array, array.length );
-    }
-*/
-
 // method returns maximum of input array, selected part n elements
-protected static double findMax( double[] array, int n )
+private static double findMax( double[] array, int n )
     {
     double max = Double.NaN;
     if ( ( array != null ) && ( n > 0 ) && ( n <= array.length ) )
@@ -60,16 +40,8 @@ protected static double findMax( double[] array, int n )
     return max;
     }
 
-// find average value of array
-
-// method returns average of input array
-protected static double findAverage( double[] array )
-    {
-    return findAverage( array, array.length );
-    }
-
 // method returns average of input array, selected part n elements
-protected static double findAverage( double[] array, int n )
+private static double findAverage( double[] array, int n )
     {
     double average = Double.NaN;
     if ( ( array != null ) && ( n > 0 ) && ( n <= array.length ) )
@@ -84,63 +56,8 @@ protected static double findAverage( double[] array, int n )
     return average;
     }
 
-// find median value of array
-/*
-protected static double findMedian( double[] array )
-    {
-    return findMedian( array, array.length );
-    }
-
-protected static double findMedian( double[] array, int n )
-    {
-    double median = Double.NaN;
-    if ( ( array != null ) && ( n == 1 ) && ( n <= array.length ) )
-        {  // median for one element array
-        median = array[0];
-        }
-    else if ( ( array != null ) && ( n > 1 ) && ( n <= array.length ) )
-        {
-        // sorting array
-        boolean flag = true;
-        while (flag)
-            {
-            flag = false;
-            for( int i=0; i<n-1; i++ )
-                {
-                if ( array[i] > array[i+1] )
-                    {
-                    double temp = array[i];
-                    array[i] = array[i+1];
-                    array[i+1] = temp;
-                    flag = true;
-                    }
-                }
-            }
-        // get median from sorted array
-        int i = n/2;
-        if ( n % 2 == 0 )
-            {
-            median = ( array[i-1] + array[i] ) / 2.0;
-            }
-        else
-            {
-            median = array[i];
-            }
-        }
-    return median;
-    }
-*/
-
-// find median value of array, additionally return indexes
-
-// method returns median representation of input array
-protected static MedianEntry findMedianIndex( double[] array )
-    {
-    return findMedianIndex( array, array.length );
-    }
-
 // method returns median representation of input array, selected part n elem.
-protected static MedianEntry findMedianIndex( double[] arrayIn, int n )
+private static MedianEntry findMedianIndex( double[] arrayIn, int n )
     {
     // this copy required because input array modified (sorted) by method
     int m = arrayIn.length;
@@ -167,10 +84,9 @@ protected static MedianEntry findMedianIndex( double[] arrayIn, int n )
         }
     else if ( ( array != null ) && ( n > 1 ) && ( n <= array.length ) )
         {
-
         // sorting array, support values and indexes arrays
         boolean flag = true;
-        while (flag)
+        while ( flag )
             {
             flag = false;
             for( int i=0; i<n-1; i++ )
@@ -189,11 +105,11 @@ protected static MedianEntry findMedianIndex( double[] arrayIn, int n )
                     }
                 }
             }
-
-        // Can't sorting by array utilites, because
-        // service array with elements indexes generation required.
-        // Arrays.sort( array, 0, n );
-            
+/*
+Can't sorting by array utilites, because
+service array with elements indexes generation required.
+Arrays.sort( array, 0, n );
+*/
         // get median from sorted array
         int i = n/2;
         if ( n % 2 == 0 )
@@ -207,7 +123,7 @@ protected static MedianEntry findMedianIndex( double[] arrayIn, int n )
         else
             {
             median = array[i];
-            if ((i==0)||(i==n))
+            if ( ( i == 0 )||( i == n ) )
                 {
                 a = b = c = i;
                 }
@@ -230,14 +146,14 @@ protected static MedianEntry findMedianIndex( double[] arrayIn, int n )
 
 
 // method returns statistics representation of input array
-protected static StatisticEntry getStatistic( double[] array )
+static StatisticEntry getStatistic( double[] array )
     {
     return getStatistic( array, array.length );
     }
 
 // method returns statistics representation of input array, 
 // selected part n elements
-protected static StatisticEntry getStatistic( double[] array, int n )
+static StatisticEntry getStatistic( double[] array, int n )
     {
     MedianEntry medianEntry = findMedianIndex( array, n );
     double average = findAverage( array, n );
@@ -254,5 +170,4 @@ protected static StatisticEntry getStatistic( double[] array, int n )
           medianEntry.medianIndex3 );
     return statisticEntry;
     }
-
 }

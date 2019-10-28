@@ -1,11 +1,10 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Scenario for GUI mode.
- * This scenario is default, console mode is alternative, it run by:
- * " java -jar <name>.jar console ".
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Scenario for GUI mode.
+This scenario is default, console mode is alternative, it run by:
+" java -jar <name>.jar console ".
+*/
 
 package javabench;
 
@@ -13,9 +12,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
-public class ScenarioGui 
+class ScenarioGui 
 {
-public void runScenario()
+void runScenario()
     {
     JFrame.setDefaultLookAndFeelDecorated( true );
     JDialog.setDefaultLookAndFeelDecorated( true );

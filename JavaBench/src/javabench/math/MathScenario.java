@@ -1,9 +1,8 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Mathematics test scenario, run as separate thread, initiate new threads.
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Mathematics test scenario, run as separate thread, initiate new threads.
+*/
 
 package javabench.math;
 
@@ -25,9 +24,8 @@ private final double mopsRatio[];
 private final FunctionThread functionSingleThread;  // Scenarios
 private final FunctionThread functionMultiThread;
 
-public MathScenario
-        ( int arraySize, int threadCount, int repeatCount, 
-          int patternSelect, int operandSizeSelect )
+public MathScenario( int arraySize, int threadCount, int repeatCount, 
+                     int patternSelect, int operandSizeSelect )
     {
     externalRepeats = repeatCount;
     operations = arraySize * INTERNAL_REPEATS;
@@ -45,7 +43,7 @@ public MathScenario
         mopsRatio[i] = 0.0;
         }
     
-    if (operandSizeSelect==0 )
+    if ( operandSizeSelect == 0 )
         {   // double precision branch
         functionSingleThread = new FunctionSingleThreadDouble
             ( arraySize, INTERNAL_REPEATS, patternSelect );
@@ -63,7 +61,7 @@ public MathScenario
 
 @Override public void run()   // parallel thread entry point
     {
-    for( int i=0; (i<externalRepeats)&&(!taskInterrupt); i++ )
+    for( int i=0; ( i < externalRepeats )&&( !taskInterrupt ); i++ )
         {
         functionSingleThread.blankArray();
         TimerUtil.timerStart();
@@ -72,7 +70,7 @@ public MathScenario
         double mops = operations / microseconds;
         mopsSingleThread[i] = mops;   // phase count after single-thread
         
-        if(taskInterrupt) break;
+        if( taskInterrupt ) break;
         counter++;
         
         functionMultiThread.blankArray();

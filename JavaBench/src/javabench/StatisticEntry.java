@@ -1,24 +1,22 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Class for return detail info with array statistics values.
- * Note. Lower, higher and center median elements required for
- * marking in the text report table.
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Class for return detail info with array statistics values.
+Note. Lower, higher and center median elements required for
+marking in the text report table.
+*/
 
 package javabench;
 
-public class StatisticEntry 
+class StatisticEntry 
 {
-public final double median, median1, median2, median3;
-public final double average, min, max;
-public final int medianIndex1, medianIndex2, medianIndex3;
+final double median, median1, median2, median3;
+final double average, min, max;
+final int medianIndex1, medianIndex2, medianIndex3;
 
-public StatisticEntry
-        ( double x1, double x2, double x3, double x4,
-          double y1, double y2, double y3, 
-          int z1, int z2, int z3 )
+StatisticEntry( double x1, double x2, double x3, double x4,
+                double y1, double y2, double y3, 
+                int z1, int z2, int z3 )
     {
     median = x1;        // calculated median
     median1 = x2;       // lower median element

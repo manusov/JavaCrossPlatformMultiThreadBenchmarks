@@ -1,10 +1,9 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Handler for "Run" and "Stop" buttons. Test executed at separate thread.
- * Measurement iterations executed in this class.
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Handler for "Run" and "Stop" buttons. Test executed at separate thread.
+Measurement iterations executed in this class.
+*/
 
 package javabench;
 
@@ -20,7 +19,7 @@ import static javax.swing.JFrame.*;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javabench.math.MathScenario;
 
-public class ActionRun extends Thread 
+class ActionRun extends Thread 
 {
 private final MathScenario mathScenario;
 private String[][] rowsValues;
@@ -48,7 +47,7 @@ private boolean lastRequired;
 
 private final ActionDraw childFrame;
 
-public ActionRun
+ActionRun
     ( BTM tm , DefaultBoundedRangeModel dbrm , JProgressBar pb ,
       JButton rsb , ActionListener rsl ,
       Object[] ui ,
@@ -60,7 +59,6 @@ public ActionRun
       int operandSize ,
       double[][] lv , boolean[][] lt ,
       ActionDraw ad )
-            
     {
     // create target operation class
     mathScenario = new MathScenario
@@ -85,11 +83,10 @@ public ActionRun
     lastRequired = true;
     
     childFrame = ad;
-    
     }
 
 // Get running status
-public static boolean getRunning() 
+static boolean getRunning() 
     {
     return running; 
     }
@@ -98,28 +95,27 @@ public static boolean getRunning()
 @Override public void run()
     {
     lastRequired = true;    
-        
     // create temporary arrays for results
-    double[] array1=null, array2=null, array3=null;
+    double[] array1 = null, array2 = null, array3 = null;
     int[][] medianIndexes = new int[3][3];
     // change run flag and button text from "Run" to "Stop"
     running = true;
     // this for benchmarks interruptable, setup context
     runStopName = runStopButton.getText();
-    runStopButton.setText("Stop");
+    runStopButton.setText( "Stop" );
     bstop = new LstStop();
     runStopButton.removeActionListener(runStopListener);
     runStopButton.addActionListener(bstop);
     // end of prepare interruptable context
     // disable (make gray) some GUI objects during test
-    for (Object uitemp : userInterface) 
+    for ( Object uitemp : userInterface ) 
         {
-        ( (JComponent) uitemp ).setEnabled(false);
+        ( (JComponent) uitemp ).setEnabled( false );
         ( (JComponent) uitemp ).repaint();
         ( (JComponent) uitemp ).revalidate();
         }
     // prevent application window close during test
-    benchFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    benchFrame.setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
     // show progress indicator 0%
     progressModel.setValue( (int)percentage );
     progressBar.setString ( progressModel.getValue() + "%" );
@@ -128,15 +124,13 @@ public static boolean getRunning()
     // blank table
     int n = rowsValues.length;
     int m = rowsValues[0].length;
-    for(int i=0; i<n; i++)
+    for( int i=0; i<n; i++ )
         {
-        for(int j=1; j<m; j++)
+        for( int j=1; j<m; j++ )
             {
             rowsValues[i][j] = "-";
             }
         }
-    
-
     // --- start calculations ---
     FunctionControllerInterface controller = childFrame.getController();
     FunctionModelInterface model = controller.getModel();
@@ -146,8 +140,8 @@ public static boolean getRunning()
     model.startModel();
     model.rescaleXmax( indexLimit + 1 );
     drawPanel.repaint();
-    BigDecimal[] value = new BigDecimal[3];
-    value[0] = value[1] = value[2] = new BigDecimal(0);
+    BigDecimal[] value = new BigDecimal[]
+        { new BigDecimal(0), new BigDecimal(0), new BigDecimal(0) };
     // model.updateValue( value );
     mathScenario.start();
     int backIndex = -2;
@@ -160,7 +154,6 @@ public static boolean getRunning()
             {
             lastRequired = false;
             }
-        
         if ( index >= 0 ) 
             {
             array1 = mathScenario.getMopsMultiThread();
@@ -190,13 +183,18 @@ public static boolean getRunning()
             drawPanel.repaint();              // synchronous revisual
             }
         // some wait reduce CPU/JVM utilization
-        try { sleep(50); } catch ( Exception e ) { }
+        try 
+            {
+            sleep(50); 
+            } 
+        catch ( InterruptedException e )
+            {
+            }
         }
     // controller.stopController();
     model.stopModel();
     // --- end calculations ---
-    
-    
+     
     // write "skipped" if interrupted by user click "Stop"
     if( interrupted )
         {
@@ -216,26 +214,26 @@ public static boolean getRunning()
     progressModel.setValue( (int)percentage );
     progressBar.setString ( progressModel.getValue() + "%" );
     // this for benchmarks interruptable
-    runStopButton.setText(runStopName);
-    runStopButton.removeActionListener(bstop);
-    runStopButton.addActionListener(runStopListener);
+    runStopButton.setText( runStopName );
+    runStopButton.removeActionListener( bstop );
+    runStopButton.addActionListener( runStopListener );
     // end of prepare interruptable context
     // enable (make non-gray) some GUI objects during test
-    for (Object uitemp : userInterface) 
+    for ( Object uitemp : userInterface ) 
         {
-        ( (JComponent) uitemp ).setEnabled(true);
+        ( (JComponent) uitemp ).setEnabled( true );
         ( (JComponent) uitemp ).repaint();
         ( (JComponent) uitemp ).revalidate();
         }
     // re-enable application window close after test
     benchFrame.setDefaultCloseOperation( EXIT_ON_CLOSE );
     // output results to log
-    if (array1 != null ) logValues[0] = array1;
-    if (array2 != null ) logValues[1] = array2;
-    if (array3 != null ) logValues[2] = array3;
-    for(int i=0; i<3; i++)
+    if ( array1 != null ) logValues[0] = array1;
+    if ( array2 != null ) logValues[1] = array2;
+    if ( array3 != null ) logValues[2] = array3;
+    for( int i=0; i<3; i++ )
         {
-        for(int j=0; j<3; j++)
+        for( int j=0; j<3; j++ )
             {
             int k = medianIndexes[i][j];
             if ( k >= 0 ) logTags[i][k] = true;
@@ -248,15 +246,15 @@ public static boolean getRunning()
 // Handler for "Stop" button, redefined from "Run" button when test in-progress
 private class LstStop implements ActionListener
     {
-    @Override public void actionPerformed (ActionEvent e)
+    @Override public void actionPerformed ( ActionEvent e )
         {
-        mathScenario.setTaskInterrupt(true);
+        mathScenario.setTaskInterrupt( true );
         interrupted = true;
         }
     }
 
 // helper method for table update
-private int[] updateLinesStatistics(double[] array, int index, int row)
+private int[] updateLinesStatistics( double[] array, int index, int row )
     {
     // calculate statistics
     StatisticEntry entry = StatisticUtil.getStatistic( array, index+1 );

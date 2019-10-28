@@ -1,10 +1,8 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Handler for "Report" button
- *
- */
-
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Handler for "Report" button
+*/
 
 package javabench;
 
@@ -13,7 +11,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.*;
 import java.io.*;
 
-public class ActionReport 
+class ActionReport 
 {
 // field FC must be static for remember path    
 private final static JFileChooser FC = new JFileChooser();
@@ -21,7 +19,7 @@ private final String FILE_NAME = "report.txt";
 private FileNameExtensionFilter filter;
     
 // Entry point for RT = "Report this" dialogue method, setup GUI
-public void createDialogRT
+void createDialogRT
       ( JFrame parentWin ,
         AbstractTableModel atm1 , AbstractTableModel atm2 ,
         String longName , String vendorVersion ,
@@ -87,7 +85,8 @@ public void createDialogRT
     }        // End of method
 
 // Helper method for convert table model to string
-private static String tableReport ( AbstractTableModel atm ) {
+private static String tableReport ( AbstractTableModel atm ) 
+    {
     StringBuilder report = new StringBuilder ( "" );
     if ( atm == null ) { return report.toString(); }
     // Continue if table exist, get geometry
@@ -146,7 +145,8 @@ private static String tableReport ( AbstractTableModel atm ) {
 
 // Helper method for save string to file and visual status
 private static void saveReport
-                   ( JFrame parentWin, String filePath, String fileData ) {
+    ( JFrame parentWin, String filePath, String fileData ) 
+    {
     int status=0;
     try ( FileWriter writer = new FileWriter( filePath, false ) )
         { 
@@ -155,18 +155,20 @@ private static void saveReport
         }
     catch( Exception ex )
         {
-        status=1; 
+        status = 1; 
         }
-            
-    if (status==0)  {
-                    JOptionPane.showMessageDialog
-                    ( parentWin, "Report saved: " + filePath, "REPORT",
-                    JOptionPane.WARNING_MESSAGE ); }
-            else    {
-                    JOptionPane.showMessageDialog
-                    ( parentWin, "Write report failed", "ERROR",
-                    JOptionPane.ERROR_MESSAGE ); }
+    if ( status == 0 )
+        {
+        JOptionPane.showMessageDialog
+            ( parentWin, "Report saved: " + filePath, "REPORT",
+              JOptionPane.WARNING_MESSAGE ); 
+        }
+    else
+        {
+        JOptionPane.showMessageDialog
+            ( parentWin, "Write report failed", "ERROR",
+              JOptionPane.ERROR_MESSAGE ); 
+        }
     }
-
 }
 

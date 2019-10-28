@@ -1,10 +1,9 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Package for support functions Y=F(X) drawings.
- * View interface for MVC (Model, View, Controller) pattern.
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Package for support functions Y=F(X) drawings.
+View interface for MVC (Model, View, Controller) pattern.
+*/
 
 package javabench.drawings;
 

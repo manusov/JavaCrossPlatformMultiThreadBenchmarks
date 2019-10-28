@@ -1,10 +1,9 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Package for support functions Y=F(X) drawings.
- * Frame for benchmarks drawings as function Y=F(X).
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Package for support functions Y=F(X) drawings.
+Frame for benchmarks drawings as function Y=F(X).
+*/
 
 package javabench.drawings;
 
@@ -65,5 +64,4 @@ private class ChildWindowListener extends WindowAdapter
         childActive = false;
         }
     }
-    
 }

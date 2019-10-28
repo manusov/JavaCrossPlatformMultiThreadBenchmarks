@@ -1,10 +1,9 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Application GUI panel with parameters getters and
- * buttons events listeners: Run, About, Report, Cancle, Draw.
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Application GUI panel with parameters getters and
+buttons events listeners: Run, About, Report, Cancle, Draw.
+*/
 
 package javabench;
 
@@ -15,17 +14,15 @@ import javabench.drawings.ActionDraw;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class GuiBox extends JFrame 
+class GuiBox extends JFrame 
 {
-
 // sizes of GUI elements
-private final static Dimension SIZE_WINDOW   = new Dimension (400, 390);
-private final static Dimension SIZE_COMBO    = new Dimension (185,21);
-private final static Dimension SIZE_PROGRESS = new Dimension (189,21);
-private final static Dimension SIZE_BUTTON   = new Dimension (89, 24);
-private final static Dimension SIZE_RUN      = new Dimension (78, 24);
-private final static Dimension SIZE_LABEL    = new Dimension (80, 21);
-
+private final static Dimension SIZE_WINDOW   = new Dimension ( 400, 390);
+private final static Dimension SIZE_COMBO    = new Dimension ( 185, 21);
+private final static Dimension SIZE_PROGRESS = new Dimension ( 189, 21);
+private final static Dimension SIZE_BUTTON   = new Dimension ( 89, 24);
+private final static Dimension SIZE_RUN      = new Dimension ( 78, 24);
+private final static Dimension SIZE_LABEL    = new Dimension ( 80, 21);
 // intervals between GUI elements
 private final static int AX1 = 1;   // results table positioning geometry
 private final static int AX2 = 0;
@@ -39,7 +36,6 @@ private final static int BY2 = 6;
 private final static int CX1 = -3;   // 3 down buttons positioning
 private final static int CX2 = -3;
 private final static int CY1 = -3;
-
 // data for test options
 private final static int ARRAY_SIZE[] =
     { 1000000, 2000000, 3000000, 5000000 };
@@ -51,23 +47,22 @@ private final static String MATH_OPERATION[] =
     { "Addition" , "Sqrt" , "Sine" };
 private final static String OPERAND_SIZE[] =
     { "Double precision (double)" , "Single precision (float)" };
-
+// arrays and threads parameters
 private int arraySize, threadsCount, repeatsCount;
-
 private final static int DEFAULT_AS = 0;         // default combo settings
 private final static int DEFAULT_TC = 7;
 private final static int DEFAULT_RC = 1;
 private final static int DEFAULT_MO = 2;
 private final static int DEFAULT_OZ = 0;
-
+// GUI base components
 private final SpringLayout sl;                   // panel and table
 private final JPanel p;
 private final JTable table;
-
+// Tables models
 private final BTM benchmarkTableModel;           // tables data models
 private RTM optionsTableModel, logTableModel;
 private RTM resultsTableModel = null;
-
+// GUI components
 private final JScrollPane sp;                            // GUI elements
 private final DefaultTableCellRenderer tableRenderer;
 private final JLabel l1, l2, l3, l4, l5, l6;
@@ -75,23 +70,23 @@ private final JComboBox c1, c2, c3, c4, c5;
 private final JProgressBar pb;
 private final DefaultBoundedRangeModel rangeModel;
 private final JButton b1, b2, b3, b4, b5;
-
+// Buttons listeners
 private final LstRun    lst1;    // buttons events listeners
 private final LstAbout  lst2;
 private final LstReport lst3;
 private final LstCancel lst4;
 private final LstDraw   lst5;
-
-public final Object thisFrame = this;  // frame for GUI elements positioning
-
-private ActionRun    aRun;     // buttons events handling classes
-private ActionAbout  aAbout;
-private ActionReport aReport;
-
+// This JFrame reference
+final Object thisFrame = this;  // frame for GUI elements positioning
+// Classes with buttons handlers
+private ActionRun    aRun;     // Run benchmark
+private ActionAbout  aAbout;   // "About" window
+private ActionReport aReport;  // Text report
+// Arrays for text report
 private boolean logValid = false;   // log statistics arrays
 private double[][]  logValues;
 private boolean[][] logTags;
-
+// Strings for text report
 private static String logHeader = null;
 private final String logName =
     "\r\nDetail log.\r\n" +
@@ -100,14 +95,16 @@ private final String logName =
 private final String[] logColumns = 
     { "Multi-Thread", "Tag  ", "Single-Thread", "Tag  ", "Ratio", "Tag  " };
 private final String logV = "M", logN = " ";
-
+// GUI and report parameters definitions
 private static final int NUM_LOG = 3;        // 0=MT, 1=ST, 2=Ratio
 private static final int NUM_OPTIONS = 5;    // Array Size, Threads Count
                                              // Repeats count, Operation,
                                              // Operand size
+// Child frame, create it for performance action
 private final ActionDraw childFrame;
 
-public GuiBox() {
+GuiBox() 
+    {
     super( About.getShortName() );
     sl = new SpringLayout();
     p = new JPanel(sl);
@@ -120,85 +117,85 @@ public GuiBox() {
         { 
         table.getColumnModel().getColumn(i).setCellRenderer( tableRenderer );
         }
-    l1 = new JLabel("Array");
-    l2 = new JLabel("Threads");
-    l3 = new JLabel("Repeats");
-    l4 = new JLabel("Operation");
-    l5 = new JLabel("Operand");
-    l6 = new JLabel("Run");
-    l1.setPreferredSize(SIZE_LABEL);
-    l2.setPreferredSize(SIZE_LABEL);
-    l3.setPreferredSize(SIZE_LABEL);
-    l4.setPreferredSize(SIZE_LABEL);
-    l5.setPreferredSize(SIZE_LABEL);
-    l6.setPreferredSize(SIZE_LABEL);
+    l1 = new JLabel( "Array"     );
+    l2 = new JLabel( "Threads"   );
+    l3 = new JLabel( "Repeats"   );
+    l4 = new JLabel( "Operation" );
+    l5 = new JLabel( "Operand"   );
+    l6 = new JLabel( "Run"       );
+    l1.setPreferredSize( SIZE_LABEL );
+    l2.setPreferredSize( SIZE_LABEL );
+    l3.setPreferredSize( SIZE_LABEL );
+    l4.setPreferredSize( SIZE_LABEL );
+    l5.setPreferredSize( SIZE_LABEL );
+    l6.setPreferredSize( SIZE_LABEL );
     c1 = new JComboBox();
     c2 = new JComboBox();
     c3 = new JComboBox();
     c4 = new JComboBox();
     c5 = new JComboBox();
-    c1.setPreferredSize(SIZE_COMBO);
-    c2.setPreferredSize(SIZE_COMBO);
-    c3.setPreferredSize(SIZE_COMBO);
-    c4.setPreferredSize(SIZE_COMBO);
-    c5.setPreferredSize(SIZE_COMBO);
+    c1.setPreferredSize( SIZE_COMBO );
+    c2.setPreferredSize( SIZE_COMBO );
+    c3.setPreferredSize( SIZE_COMBO );
+    c4.setPreferredSize( SIZE_COMBO );
+    c5.setPreferredSize( SIZE_COMBO );
     
     for ( int i=0; i<ARRAY_SIZE.length; i++ )
         {
         c1.addItem( Integer.toString( ARRAY_SIZE[i] ) + " numbers" ); 
         }
-    c1.setSelectedIndex(DEFAULT_AS);
+    c1.setSelectedIndex( DEFAULT_AS );
     
     for ( int i=0; i<THREADS_COUNT.length; i++ )
         {
         c2.addItem( Integer.toString( THREADS_COUNT[i] ) ); 
         }
-    c2.setSelectedIndex(DEFAULT_TC);
+    c2.setSelectedIndex( DEFAULT_TC );
     
     for ( int i=0; i<REPEATS_COUNT.length; i++ )
         {
         c3.addItem( Integer.toString( REPEATS_COUNT[i] ) ); 
         }
-    c3.setSelectedIndex(DEFAULT_RC);
+    c3.setSelectedIndex( DEFAULT_RC );
     
     for (String MATH_OPERATION1 : MATH_OPERATION) 
         {
         c4.addItem( MATH_OPERATION1 );
         }
-    c4.setSelectedIndex(DEFAULT_MO);
+    c4.setSelectedIndex( DEFAULT_MO );
 
     for (String OPERAND_SIZE1 : OPERAND_SIZE) 
         {
         c5.addItem( OPERAND_SIZE1 );
         }
-    c5.setSelectedIndex(DEFAULT_OZ);
+    c5.setSelectedIndex( DEFAULT_OZ );
     
-    rangeModel = new DefaultBoundedRangeModel(0,0,0,100);
-    pb = new JProgressBar(rangeModel);
-    pb.setPreferredSize(SIZE_PROGRESS);
-    pb.setStringPainted(true);
-    pb.setString("Please run...");
-    b1 = new JButton("Run");
-    b2 = new JButton("About");
-    b3 = new JButton("Report");
-    b4 = new JButton("Cancel");
-    b5 = new JButton("Draw");
+    rangeModel = new DefaultBoundedRangeModel( 0, 0, 0, 100 );
+    pb = new JProgressBar( rangeModel );
+    pb.setPreferredSize( SIZE_PROGRESS );
+    pb.setStringPainted( true );
+    pb.setString( "Please run..." );
+    b1 = new JButton( "Run"    );
+    b2 = new JButton( "About"  );
+    b3 = new JButton( "Report" );
+    b4 = new JButton( "Cancel" );
+    b5 = new JButton( "Draw"   );
     
-    b1.setPreferredSize(SIZE_RUN);
-    b2.setPreferredSize(SIZE_BUTTON);
-    b3.setPreferredSize(SIZE_BUTTON);
-    b4.setPreferredSize(SIZE_BUTTON);
-    b5.setPreferredSize(SIZE_RUN);
+    b1.setPreferredSize( SIZE_RUN );
+    b2.setPreferredSize( SIZE_BUTTON );
+    b3.setPreferredSize( SIZE_BUTTON );
+    b4.setPreferredSize( SIZE_BUTTON );
+    b5.setPreferredSize( SIZE_RUN );
     lst1 = new LstRun();
     lst2 = new LstAbout();
     lst3 = new LstReport();
     lst4 = new LstCancel();
     lst5 = new LstDraw();
-    b1.addActionListener(lst1);
-    b2.addActionListener(lst2);
-    b3.addActionListener(lst3);
-    b4.addActionListener(lst4);
-    b5.addActionListener(lst5);
+    b1.addActionListener( lst1 );
+    b2.addActionListener( lst2 );
+    b3.addActionListener( lst3 );
+    b4.addActionListener( lst4 );
+    b5.addActionListener( lst5 );
     // start layout setup, results table
     sl.putConstraint ( SpringLayout.NORTH, sp, AY1, SpringLayout.NORTH, p );
     sl.putConstraint ( SpringLayout.SOUTH, sp, AY2, SpringLayout.SOUTH, p );
@@ -245,34 +242,34 @@ public GuiBox() {
     sl.putConstraint ( SpringLayout.SOUTH, b5,   -3, SpringLayout.NORTH, b1 );
     sl.putConstraint ( SpringLayout.WEST,  b5,    0, SpringLayout.WEST,  b1 );
     // add all to panel
-    p.add(sp);
-    p.add(l1);
-    p.add(l2);
-    p.add(l3);
-    p.add(l4);
-    p.add(l5);
-    p.add(l6);
-    p.add(c1);
-    p.add(c2);
-    p.add(c3);
-    p.add(c4);
-    p.add(c5);
-    p.add(pb);
-    p.add(b1);
-    p.add(b2);
-    p.add(b3);
-    p.add(b4);
-    p.add(b5);
+    p.add( sp );
+    p.add( l1 );
+    p.add( l2 );
+    p.add( l3 );
+    p.add( l4 );
+    p.add( l5 );
+    p.add( l6 );
+    p.add( c1 );
+    p.add( c2 );
+    p.add( c3 );
+    p.add( c4 );
+    p.add( c5 );
+    p.add( pb );
+    p.add( b1 );
+    p.add( b2 );
+    p.add( b3 );
+    p.add( b4 );
+    p.add( b5 );
     // pre-initializing drawings window support
     childFrame = new ActionDraw( (JFrame)thisFrame );
     }
     
-public Dimension getApplicationDimension()
+Dimension getApplicationDimension()
     {
     return SIZE_WINDOW;
     }
    
-public JPanel getApplicationPanel()
+JPanel getApplicationPanel()
     {
     return p;
     }
@@ -282,7 +279,7 @@ public JPanel getApplicationPanel()
 // RUN button
 private class LstRun implements ActionListener
     {
-    @Override public void actionPerformed (ActionEvent e)
+    @Override public void actionPerformed ( ActionEvent e )
         {
         if ( !(ActionRun.getRunning()) )
             {
@@ -307,9 +304,9 @@ private class LstRun implements ActionListener
             logValid = true;
             logValues = new double  [NUM_LOG][repeatsCount];
             logTags   = new boolean [NUM_LOG][repeatsCount];
-            for (int a=0; a<NUM_LOG; a++)
+            for ( int a=0; a<NUM_LOG; a++ )
                 {
-                for (int b=0; b<repeatsCount; b++)
+                for ( int b=0; b<repeatsCount; b++ )
                     {
                     logValues[a][b] = 0.0;
                     logTags[a][b] = false;
@@ -331,21 +328,21 @@ private class LstRun implements ActionListener
 // ABOUT button
 private class LstAbout implements ActionListener
     {
-    @Override public void actionPerformed (ActionEvent e)
+    @Override public void actionPerformed ( ActionEvent e )
         {
         aAbout = new ActionAbout();
         final JDialog dialog = aAbout.createDialog
             ( (JFrame)thisFrame ,
         About.getLongName() , About.getVendorName() );
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
+        dialog.setLocationRelativeTo( null );
+        dialog.setVisible( true );
         }
     }
             
 // REPORT button 
 private class LstReport implements ActionListener
     {
-    @Override public void actionPerformed (ActionEvent e)
+    @Override public void actionPerformed ( ActionEvent e )
         {
         String[] s1;
         String[][] s2;
@@ -361,13 +358,13 @@ private class LstReport implements ActionListener
             {
             for ( int j=0; j<m; j++ )
                 {
-                s2[i][j] = benchmarkTableModel.getValueAt(i, j);
+                s2[i][j] = benchmarkTableModel.getValueAt( i, j );
                 }
             }
         // make table for report measurement results
         optionsTableModel = new RTM();
-        optionsTableModel.setColumnsNames(s1);
-        optionsTableModel.setRowsValues(s2);
+        optionsTableModel.setColumnsNames( s1 );
+        optionsTableModel.setRowsValues( s2 );
         // prepare second table model for options
         s1 = new String[] { "Option" , "Value" };
         // options names
@@ -385,8 +382,8 @@ private class LstReport implements ActionListener
         s2[4][1] = (String) c5.getSelectedItem();
         // make table for report options values
         logTableModel = new RTM();
-        logTableModel.setColumnsNames(s1);
-        logTableModel.setRowsValues(s2);
+        logTableModel.setColumnsNames( s1 );
+        logTableModel.setRowsValues( s2 );
         // prepare second table model for results log
         resultsTableModel = null;
         logHeader = null;
@@ -397,7 +394,7 @@ private class LstReport implements ActionListener
             n = logValues[0].length;
             m = logValues.length + logTags.length;
             s2 = new String[n][m];
-            for (int i=0; i<n; i++)
+            for ( int i=0; i<n; i++ )
                 {
                 s2[i][0] = String.format( "%.2f", logValues[0][i] );  // MT
                 if ( logTags[0][i] ) 
@@ -411,8 +408,8 @@ private class LstReport implements ActionListener
                 }
             // make table for report options values
             resultsTableModel = new RTM();
-            resultsTableModel.setColumnsNames(s1);
-            resultsTableModel.setRowsValues(s2);
+            resultsTableModel.setColumnsNames( s1 );
+            resultsTableModel.setRowsValues( s2 );
             }
         // call report dialogue and report save
         aReport = new ActionReport();
@@ -426,16 +423,16 @@ private class LstReport implements ActionListener
 // CANCEL button
 private class LstCancel implements ActionListener
     {
-    @Override public void actionPerformed (ActionEvent e)
+    @Override public void actionPerformed ( ActionEvent e )
         {
-        System.exit(0);
+        System.exit( 0 );
         }
     }
 
 // DRAW button
 private class LstDraw implements ActionListener
     {
-    @Override public void actionPerformed (ActionEvent e)
+    @Override public void actionPerformed ( ActionEvent e )
         {
         childFrame.start();
         }

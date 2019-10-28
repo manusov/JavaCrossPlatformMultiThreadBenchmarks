@@ -1,14 +1,13 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Mathematics test pattern for single-thread mode.
- * Single precision (float) operands.
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Mathematics test pattern for single-thread mode.
+Single precision (float) operands.
+*/
 
 package javabench.math;
 
-public class FunctionSingleThreadFloat extends FunctionThread
+class FunctionSingleThreadFloat extends FunctionThread
 {
 final int n;                     // float numbers per array
 final int r;                     // internal measurement repeats count
@@ -19,7 +18,7 @@ final float DXR = 0.0000001f;    // step for argument change in runtime
 float[][] array;                 // array of (x,y) pairs
 
 // constructor creates x-array, blank y-array
-public FunctionSingleThreadFloat
+FunctionSingleThreadFloat
         ( int arraySize, int internalRepeats, int patternSelect )
     {
     n = arraySize;
@@ -36,7 +35,7 @@ public FunctionSingleThreadFloat
     } 
 
 // blank array
-@Override public void blankArray()
+@Override void blankArray()
     {
     float x = X;
     for(int i=0; i<n; i++)
@@ -49,12 +48,12 @@ public FunctionSingleThreadFloat
 
 // this for explicit release memory to activate garbage collection,
 // otherwise out of memory errors exceptions
-@Override public void releaseArray()
+@Override void releaseArray()
     {
     array = null;
     }
 
-// this public get array channel for prevent speculations
+// this get array channel must be PUBLIC for prevent JVM speculations
 public float[][] getFloatArray()
     {
     return array;
@@ -62,9 +61,9 @@ public float[][] getFloatArray()
 
 // function tabulation y[i] = f( x[i] )
 // this method is benchmarking object, single-thread
-@Override public void tabulate()
+@Override void tabulate()
     {
-    switch (p) 
+    switch ( p ) 
         {
         case 0:
             tabulateAdd();
@@ -117,5 +116,4 @@ private void tabulateSin()
             }
         }
     }
-
 }

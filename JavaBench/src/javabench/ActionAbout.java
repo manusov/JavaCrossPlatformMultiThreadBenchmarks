@@ -1,9 +1,8 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Handler for "About" button.
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Handler for "About" button.
+*/
 
 package javabench;
 
@@ -16,21 +15,21 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class ActionAbout {
-
-private final Color LOGO_COLOR = new Color(143,49,40);
-private final Dimension BUTTON_HTTP_SIZE   = new Dimension (180, 25);
-private final Dimension BUTTON_CANCEL_SIZE = new Dimension (89, 25);
+class ActionAbout 
+{
+private final Color LOGO_COLOR = new Color( 143, 49, 40 );
+private final Dimension BUTTON_HTTP_SIZE   = new Dimension ( 180, 25 );
+private final Dimension BUTTON_CANCEL_SIZE = new Dimension ( 89, 25 );
     
 // Entry point for "About" dialogue method, setup GUI
-public JDialog createDialog
+JDialog createDialog
     ( JFrame parentWin , String longName , String vendorVersion )
     {
-    final JDialog dialog = new JDialog(parentWin, "About", true);
-    dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    final JDialog dialog = new JDialog( parentWin, "About", true );
+    dialog.setDefaultCloseOperation( DISPOSE_ON_CLOSE );
     // Create GUI components
     SpringLayout sl1 = new SpringLayout();
-    JPanel p1 = new JPanel(sl1);
+    JPanel p1 = new JPanel( sl1 );
     // Start build content
     final String sHttp = About.getWebSite();
     String sCancel = "Cancel";
@@ -45,11 +44,11 @@ public JDialog createDialog
     Font font1 = new Font ( "Verdana", Font.PLAIN, 12 );
     l2.setFont(font1);
     l3.setFont(font1);
-    JButton b1 = new JButton(sHttp);
-    JButton b2 = new JButton(sCancel);
+    JButton b1 = new JButton( sHttp );
+    JButton b2 = new JButton( sCancel );
     // buttons size
-    b1.setPreferredSize(BUTTON_HTTP_SIZE);
-    b2.setPreferredSize(BUTTON_CANCEL_SIZE);
+    b1.setPreferredSize( BUTTON_HTTP_SIZE );
+    b2.setPreferredSize( BUTTON_CANCEL_SIZE );
     // labels layout
     sl1.putConstraint ( SpringLayout.NORTH, l1,  24, SpringLayout.NORTH, p1 );
     sl1.putConstraint ( SpringLayout.WEST,  l1,  28, SpringLayout.WEST,  p1 );
@@ -63,27 +62,34 @@ public JDialog createDialog
     sl1.putConstraint ( SpringLayout.SOUTH, b2, -10, SpringLayout.SOUTH, p1 );
     sl1.putConstraint ( SpringLayout.WEST,  b2,   3, SpringLayout.EAST,  b1 );
     // add labels and buttons to panel
-    p1.add(l1);
-    p1.add(l2);
-    p1.add(l3);
-    p1.add(b1);
-    p1.add(b2);
+    p1.add( l1 );
+    p1.add( l2 );
+    p1.add( l3 );
+    p1.add( b1 );
+    p1.add( b2 );
     // Action listener for web button
-    b1.addActionListener( new ActionListener() {
-    @Override public void actionPerformed( ActionEvent e ) 
-        { if( Desktop.isDesktopSupported() )
-            { try { Desktop.getDesktop().browse(new URI(sHttp)); }
-            catch (URISyntaxException | IOException ex1) 
-                { System.out.println(ex1); } } } } );
+    b1.addActionListener( ( ActionEvent e ) -> 
+        {
+        if( Desktop.isDesktopSupported() )
+        { 
+        try 
+            {
+            Desktop.getDesktop().browse(new URI( sHttp ) );
+            }
+        catch ( URISyntaxException | IOException ex1 )
+            { 
+            System.out.println(ex1); 
+            } }
+        } );
     // Action listener for cancel button
-    b2.addActionListener( new ActionListener() {
-    @Override public void actionPerformed( ActionEvent e ) 
-        { dialog.dispose(); } } );
+    b2.addActionListener( ( ActionEvent e ) ->
+        {
+        dialog.dispose();
+        } );
     // Visual window and return
-    dialog.setContentPane(p1);
-    dialog.setSize(300,150);
-    dialog.setResizable(false);
+    dialog.setContentPane( p1 );
+    dialog.setSize( 300, 150 );
+    dialog.setResizable( false );
     return dialog;  
     }
-
 }

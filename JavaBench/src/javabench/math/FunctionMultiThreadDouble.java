@@ -1,10 +1,9 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Mathematics test pattern for multi-thread mode.
- * Double precision operands.
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Mathematics test pattern for multi-thread mode.
+Double precision operands.
+*/
 
 package javabench.math;
 
@@ -13,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
-public class FunctionMultiThreadDouble extends FunctionSingleThreadDouble 
+class FunctionMultiThreadDouble extends FunctionSingleThreadDouble 
 {
 private final int m;                     // measurement repeats count
 private final ExecutorService ex;        // executor object
@@ -22,11 +21,10 @@ private final FutureTask[] ft;           // task interface
     
 // constructor creates x-array, blank y-array,
 // and creates threads management context
-public FunctionMultiThreadDouble
-        ( int arraySize, int internalRepeats, 
-          int threadCount, int patternSelect )
+FunctionMultiThreadDouble( int arraySize, int internalRepeats, 
+                           int threadCount, int patternSelect )
     {                         
-    super(arraySize, internalRepeats, patternSelect);
+    super( arraySize, internalRepeats, patternSelect );
     m = threadCount;
     ex = Executors.newCachedThreadPool();
     ft = new FutureTask[m];
@@ -63,14 +61,14 @@ public FunctionMultiThreadDouble
     }
 
 // stop executor, otherwise application still active
-@Override public void stop()
+@Override void stop()
     {
     ex.shutdown();
     }
 
 // function tabulation y[i] = f( x[i] )
 // this method is benchmarking object, multi-thread
-@Override public void tabulate()
+@Override void tabulate()
     {
     for( int j=0; j<r; j++ )
         {
@@ -152,5 +150,4 @@ class WorkerTaskSin implements Callable<String>
         return null;
         }
     }
-
 }

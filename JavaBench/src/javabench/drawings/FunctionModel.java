@@ -1,10 +1,9 @@
 /*
- *
- * Multithread math calculations benchmark. (C)2019 IC Book Labs.
- * Package for support functions Y=F(X) drawings.
- * Function Y=F(X) drawing model.
- *
- */
+Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+-----------------------------------------------------------------------
+Package for support functions Y=F(X) drawings.
+Function Y=F(X) drawing model.
+*/
 
 package javabench.drawings;
 
@@ -12,7 +11,6 @@ import java.math.BigDecimal;
 
 public class FunctionModel implements FunctionModelInterface
 {
-
 private BigDecimal[][] function;
 
 private final int DEFAULT_SCALE_BASE  = 1000;
@@ -159,5 +157,4 @@ public FunctionModel( FunctionControllerInterface x )
         currentCount++;
         }
     }
-
 }
