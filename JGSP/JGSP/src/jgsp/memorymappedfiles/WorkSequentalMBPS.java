@@ -4,7 +4,9 @@ Sequental tasks dispatcher for memory-mapped files benchmark.
 
 package jgsp.memorymappedfiles;
 
+import java.util.LinkedList;
 import jgsp.statistics.StateAsync;
+import jgsp.statistics.StateSync;
 import jgsp.statistics.StatisticsModel;
 import jgsp.statistics.StatusEntry;
 import static jgsp.timings.Delay.delay;
@@ -17,13 +19,16 @@ Test phases constants definition
 final static int READ_ID  = 0;
 final static int WRITE_ID = 1;
 final static int COPY_ID  = 2;
-final static int ID_COUNT = 3;
+final static int TOTAL_READ_ID  = 3;
+final static int TOTAL_WRITE_ID = 4;
+final static int TOTAL_COPY_ID  = 5;
+final static int ID_COUNT = 6;
 /*
 Options constants definitions    
 */
-private final static int READ_WRITE = 0;
-private final static int READ_ONLY  = 1;
-private final static int WRITE_ONLY = 2;
+final static int READ_WRITE = 0;
+final static int READ_ONLY  = 1;
+final static int WRITE_ONLY = 2;
 /*
 Default settings for options variables
 */
@@ -41,33 +46,36 @@ private final static int    DEFAULT_READ_DELAY  = 0;
 private final static int    DEFAULT_WRITE_DELAY = 0;
 private final static int    DEFAULT_COPY_DELAY  = 0;
 /*
-Options variables
+Options variables, can't be private because used by child class
 */
-private final String pathSrc;
-private final String prefixSrc;
-private final String postfixSrc;
-private final String pathDst;
-private final String prefixDst;
-private final String postfixDst;
-private final int mode;
-private final int fileCount;
-private final int fileSize;
-private final int blockSize;
-private final int readDelay;
-private final int writeDelay;
-private final int copyDelay;
-private final byte[] dataBlock;
+final String pathSrc;
+final String prefixSrc;
+final String postfixSrc;
+final String pathDst;
+final String prefixDst;
+final String postfixDst;
+final int mode;
+final int fileCount;
+final int fileSize;
+final int blockSize;
+final int readDelay;
+final int writeDelay;
+final int copyDelay;
+final byte[] dataBlock;
 /*
-Read, Write, Copy, Delete helper and benchmarks results statistics support
+Read, Write, Copy, Delete helper and benchmarks results statistics support,
+entries list (queue) for process synchronous monitoring.
 */
-private final StatisticsModel statistics;
-private final HelperIO io;
+final StatisticsModel statistics;
+final HelperIO io;
+final LinkedList<StateSync> syncQueue;
 /*
-Percentage value, current executed phase name string, last error data
+Current executed phase id and name string, percentage, last error data,
 */
-private String phaseName = "";
-private double percentage = 0.0;
-private StatusEntry lastError;
+int phaseID = -1;
+String phaseName = "";
+double percentage = 0.0;
+StatusEntry lastError;
 /*
 Constructor for options settings by internal defaults
 */    
@@ -91,6 +99,7 @@ public WorkSequentalMBPS()
         dataBlock[i] = 0;
     statistics = new StatisticsModel( ID_COUNT );
     io = new HelperIO( statistics );
+    syncQueue = new LinkedList();
     }
 /*
 Constructor for options settings by input parameters
@@ -128,11 +137,12 @@ public WorkSequentalMBPS
         }
     statistics = new StatisticsModel( ID_COUNT );
     io = new HelperIO( statistics );
+    syncQueue = new LinkedList();
     }
 /*
 Asynchronous get I/O performance statistics
 */
-public StateAsync[] getIOStatistics()
+public StateAsync[] getAsync()
     {
     StateAsync[] entries = new StateAsync[ID_COUNT];
     for( int i=0; i<ID_COUNT; i++ )
@@ -142,14 +152,14 @@ public StateAsync[] getIOStatistics()
     return entries;    
     }
 /*
-Asynchronous get phase name
+Asynchronous get current phase name
 */
 public String getPhaseName()
     {
     return phaseName;
     }
 /*
-Asynchronous get percentage
+Asynchronous get current percentage
 */
 public double getPercentage()
     {
@@ -162,46 +172,113 @@ public StatusEntry getLastError()
     {
     return lastError;
     }
+
+/*
+Get entry of synchronous statistics
+*/
+public StateSync getSync()
+    {
+    synchronized( syncQueue )
+        {
+        if ( syncQueue.isEmpty() )
+            {
+            return null;
+            }
+        else
+            {
+            return syncQueue.removeFirst();
+            }
+        }
+    }
+
+/*
+Add entry of synchronous statistics, also used by child class
+*/
+void setSync( int count, StatusEntry se, int id, String name  )
+    {
+    if ( id >= 0 )
+        {
+        StateAsync a = statistics.receive( id );
+        StateSync s = new StateSync
+            ( count, se, id, name, 
+              a.current, a.min, a.max, a.average, a.median );
+        synchronized( syncQueue )
+            {
+            syncQueue.add( s );
+            }
+        }
+    }
+
+/*
+Clear synchronous statistics, also used by child class
+*/
+void clearSync()
+    {
+    synchronized( syncQueue )
+        {
+        syncQueue.clear();
+        }
+    }
+
 /*
 Run benchmarks performance
 */
 @Override public void run()
     {
-    percentage = 0.0;
+    phaseID = -1;
     phaseName = "starting...";
+    percentage = 0.0;
     lastError = new StatusEntry( true, "OK" );
+    clearSync();
+    long total = fileCount * fileSize;
     
     if ( mode != READ_ONLY )
         {
         /*
         Phase = Write
         */
+        phaseID = WRITE_ID;
         phaseName = "pre-write wait...";
         delay( writeDelay );
         phaseName = "write...";
+        
+        statistics.startInterval( TOTAL_WRITE_ID, System.nanoTime() );
         for( int i=0; i<fileCount; i++ )
             {
+            if ( isInterrupted() )
+                break;
             String src = pathSrc + prefixSrc + i + postfixSrc;
             MappedStatusEntry statusEntry = 
                         io.mappedWrite( src, fileSize, dataBlock, true );
             if ( ! statusEntry.flag )
                 lastError = statusEntry;
+            setSync( i+1, statusEntry, phaseID, phaseName );
             }
+        statistics.sendMBPS( TOTAL_WRITE_ID, total, System.nanoTime() );
+        
         /*
         Phase = Copy
         */
+        phaseID = COPY_ID;
         phaseName = "pre-copy wait...";
         delay( copyDelay );
-        phaseName = "copy";
+        phaseName = "copy...";
+        
+        statistics.startInterval( TOTAL_COPY_ID, System.nanoTime() );
         for( int i=0; i<fileCount; i++ )
             {
+            if ( isInterrupted() )
+                break;
             String src = pathSrc + prefixSrc + i + postfixSrc;
             String dst = pathDst + prefixDst + i + postfixDst;
             MappedStatusEntry statusEntry =
-                        io.mappedCopy( src, dst, blockSize );
+                        io.mappedCopy( src, dst, blockSize, true );
             if ( ! statusEntry.flag )
                 lastError = statusEntry;
+            setSync( i+1, statusEntry, phaseID, phaseName );
             }
+        statistics.sendMBPS( TOTAL_COPY_ID, total, System.nanoTime() );
+
         }
     
     if ( mode != WRITE_ONLY )
@@ -209,23 +286,34 @@ Run benchmarks performance
         /*
         Phase = Read
         */
+        phaseID = READ_ID;
         phaseName = "pre-read wait...";
         delay( readDelay );
-        phaseName = "read";
+        phaseName = "read...";
+        
+        statistics.startInterval( TOTAL_READ_ID, System.nanoTime() );
         for( int i=0; i<fileCount; i++ )
             {
+            if ( isInterrupted() )
+                break;
             String src = pathSrc + prefixSrc + i + postfixSrc;
             MappedStatusEntry statusEntry =
                         io.mappedRead( src, blockSize, true );
             if ( ! statusEntry.flag )
                 lastError = statusEntry;
+            setSync( i+1, statusEntry, phaseID, phaseName );
             }
+        statistics.sendMBPS( TOTAL_READ_ID, total, System.nanoTime() );
+
         }
     
+    phaseID = -1;
     if ( mode == READ_WRITE )
         {
+        phaseName = "delete...";
         /*
-        Phase = Delete, note about files not deleted in WRITE_ONLY mode
+        Phase = Delete, note about files not deleted in WRITE_ONLY mode.
+        Note delete operation cycles for all files is not interruptable.
         Use 2 separate cycles for src and dst, for delete sequence same as
         write sequence, performance reasons.
         */
@@ -245,5 +333,4 @@ Run benchmarks performance
             }
         }
     }
-
 }

@@ -83,7 +83,7 @@ MappedStatusEntry mappedWrite( String path, int size, byte[] dataBlock )
         Get timer
         */
         if ( model != null ) 
-            model.startInterval( System.nanoTime() );
+            model.startInterval( WRITE_ID, System.nanoTime() );
         /*
         Start of time measured interval
         */
@@ -166,7 +166,7 @@ MappedStatusEntry mappedRead( String path, int blockSize )
         Get timer
         */
         if ( model != null ) 
-            model.startInterval( System.nanoTime() );
+            model.startInterval( READ_ID, System.nanoTime() );
         /*
         Start of time measured interval
         */
@@ -239,7 +239,7 @@ MappedStatusEntry mappedCopy( String srcPath, String dstPath, int blockSize )
         Get timer
         */
         if ( model != null ) 
-            model.startInterval( System.nanoTime() );
+            model.startInterval( COPY_ID, System.nanoTime() );
         /*
         Initializing blocks and tail sizes
         */

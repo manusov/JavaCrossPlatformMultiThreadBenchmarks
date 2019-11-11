@@ -19,6 +19,7 @@ public StatisticsModel( int arraysCount )
         {
         arrays[i] = new ArrayList<>();
         }
+    nanoseconds = new long[arraysCount];
     }
 
 /*
@@ -39,16 +40,17 @@ public boolean send( int selector, double value )
     }
 
 /*
-Timer value at start of measured interval
+Timer values at start of measured interval, one value per operation ID
 */
-private long nanoseconds = 0;
+private final long[] nanoseconds;
 
 /*
 Send timer value for start of interval
 */
-public void startInterval( long nanoseconds )
+public void startInterval( int selector, long nanoseconds )
     {
-    this.nanoseconds = nanoseconds;
+    if ( selector < this.nanoseconds.length )
+        this.nanoseconds[selector] = nanoseconds;
     }
 
 /*
@@ -57,10 +59,17 @@ as arguments for calculate megabytes per second
 */
 public boolean sendMBPS( int selector, long bytes, long nanoseconds )
     {
-    double seconds = ( nanoseconds - this.nanoseconds ) / 1E9;
-    double megabytes = bytes / 1E6;
-    double mbps = megabytes / seconds;
-    return send( selector, mbps );
+    if ( selector < this.nanoseconds.length )
+        {
+        double seconds = ( nanoseconds - this.nanoseconds[selector] ) / 1E9;
+        double megabytes = bytes / 1E6;
+        double mbps = megabytes / seconds;
+        return send( selector, mbps );
+        }
+    else
+        {
+        return false;
+        }
     }
 
 /*
@@ -69,9 +78,16 @@ as arguments for calculate IO transactions per second
 */
 public boolean sendIOPS( int selector, long transactions, long nanoseconds )
     {
-    double seconds = ( nanoseconds - this.nanoseconds ) / 1E9;
-    double iops = transactions / seconds;
-    return send( selector, iops );
+    if ( selector < this.nanoseconds.length )
+        {
+        double seconds = ( nanoseconds - this.nanoseconds[selector] ) / 1E9;
+        double iops = transactions / seconds;
+        return send( selector, iops );
+        }
+    else
+        {
+        return false;
+        }
     }
 
 /*
