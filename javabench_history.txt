@@ -1,0 +1,11 @@
+JavaBench v1.00.00 (February, 05, 2021)
+1) Change web link.
+2) Some changes at GUI.
+3) Add comments to source code.
+
+
+
+Previous versions key points:
+v0.12.01 first build at JDK8 mode (advanced)
+v0.11.01 last build at JDK7 mode (legacy)
+
