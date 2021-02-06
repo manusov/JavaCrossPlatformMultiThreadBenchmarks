@@ -19,24 +19,32 @@ class GuiBox extends JFrame
 {
 // sizes of GUI elements
 private final static Dimension SIZE_WINDOW   = new Dimension ( 400, 390);
-private final static Dimension SIZE_COMBO    = new Dimension ( 185, 21);
-private final static Dimension SIZE_PROGRESS = new Dimension ( 189, 21);
+private final static Dimension SIZE_COMBO    = new Dimension ( 220, 21);
+private final static Dimension SIZE_PROGRESS = new Dimension ( 193, 24);
 private final static Dimension SIZE_BUTTON   = new Dimension ( 89, 24);
 private final static Dimension SIZE_RUN      = new Dimension ( 78, 24);
 private final static Dimension SIZE_LABEL    = new Dimension ( 80, 21);
 // intervals between GUI elements
-private final static int AX1 = 1;   // results table positioning geometry
-private final static int AX2 = 0;
-private final static int AY1 = 1;
-private final static int AY2 = - SIZE_WINDOW.height / 2 - 28 - 15;
-private final static int BX1 = 22;   // labels, combos, buttons positioning
-private final static int BX2 = 1;
-private final static int BX3 = 5;
-private final static int BY1 = 26;
-private final static int BY2 = 6;
-private final static int CX1 = -3;   // 3 down buttons positioning
-private final static int CX2 = -3;
-private final static int CY1 = -3;
+// results table positioning geometry
+private final static int AX1 = 1;   // results table left
+private final static int AX2 = 0;   // right
+private final static int AY1 = 1;   // top
+private final static int AY2 = - SIZE_WINDOW.height / 2 - 43;  // down
+// labels and combos positioning
+private final static int BX1 = 22;  // combos labels left
+private final static int BX2 = 1;   // combos left relative labels dimensions
+private final static int BY1 = 15;  // combos up relative table down
+private final static int BY2 = 6;   // vertical interval between combos
+// 2 buttons: Draw and Run
+private final static int CY1 = -3;  // vertical interval between buttons
+// progress indicator and label "Run"
+private final static int DX1 = 22;  // label "Run" left
+private final static int DY1 = 13;  // v. interval between combo and progress
+// 3 down buttons positioning
+private final static int EX1 = -3;  // right horizontal interval from panel
+private final static int EX2 = -3;  // horizontal interval between down buttons
+private final static int EY1 = -3;  // down vertical interval from panel
+
 // data for test options
 private final static int ARRAY_SIZE[] =
     { 1000000, 2000000, 3000000, 5000000 };
@@ -71,12 +79,12 @@ private final JComboBox c1, c2, c3, c4, c5;
 private final JProgressBar pb;
 private final DefaultBoundedRangeModel rangeModel;
 private final JButton b1, b2, b3, b4, b5;
-// Buttons listeners
-private final LstRun    lst1;    // buttons events listeners
-private final LstAbout  lst2;
-private final LstReport lst3;
-private final LstCancel lst4;
-private final LstDraw   lst5;
+// Buttons events listeners
+private final LstDraw   lst1;
+private final LstRun    lst2;
+private final LstAbout  lst3;
+private final LstReport lst4;
+private final LstCancel lst5;
 // This JFrame reference
 final Object thisFrame = this;  // frame for GUI elements positioning
 // Classes with buttons handlers
@@ -176,22 +184,22 @@ GuiBox()
     pb.setPreferredSize( SIZE_PROGRESS );
     pb.setStringPainted( true );
     pb.setString( "Please run..." );
-    b1 = new JButton( "Run"    );
-    b2 = new JButton( "About"  );
-    b3 = new JButton( "Report" );
-    b4 = new JButton( "Cancel" );
-    b5 = new JButton( "Draw"   );
-    
+    b1 = new JButton( "Draw"   );
+    b2 = new JButton( "Run"    );
+    b3 = new JButton( "About"  );
+    b4 = new JButton( "Report" );
+    b5 = new JButton( "Cancel" );
     b1.setPreferredSize( SIZE_RUN );
-    b2.setPreferredSize( SIZE_BUTTON );
+    b2.setPreferredSize( SIZE_RUN );
     b3.setPreferredSize( SIZE_BUTTON );
     b4.setPreferredSize( SIZE_BUTTON );
-    b5.setPreferredSize( SIZE_RUN );
-    lst1 = new LstRun();
-    lst2 = new LstAbout();
-    lst3 = new LstReport();
-    lst4 = new LstCancel();
-    lst5 = new LstDraw();
+    b5.setPreferredSize( SIZE_BUTTON );
+    lst1 = new LstDraw();
+    lst2 = new LstRun();
+    lst3 = new LstAbout();
+    lst4 = new LstReport();
+    lst5 = new LstCancel();
+    // add event listeners to buttons
     b1.addActionListener( lst1 );
     b2.addActionListener( lst2 );
     b3.addActionListener( lst3 );
@@ -213,8 +221,9 @@ GuiBox()
     sl.putConstraint ( SpringLayout.WEST,  l4,  BX1, SpringLayout.WEST,  p  );
     sl.putConstraint ( SpringLayout.NORTH, l5,  BY2, SpringLayout.SOUTH, l4 );
     sl.putConstraint ( SpringLayout.WEST,  l5,  BX1, SpringLayout.WEST,  p  );
-    sl.putConstraint ( SpringLayout.NORTH, l6,  BY2, SpringLayout.SOUTH, l5 );
-    sl.putConstraint ( SpringLayout.WEST,  l6,  BX1, SpringLayout.WEST,  p  );
+    // label "Run"
+    sl.putConstraint ( SpringLayout.NORTH, l6,    0, SpringLayout.NORTH, pb );
+    sl.putConstraint ( SpringLayout.WEST,  l6,  DX1, SpringLayout.WEST,  p  );
     // combo boxes
     sl.putConstraint ( SpringLayout.NORTH, c1,  BY1, SpringLayout.SOUTH, sp );
     sl.putConstraint ( SpringLayout.WEST,  c1,  BX2, SpringLayout.EAST,  l1 );
@@ -227,21 +236,21 @@ GuiBox()
     sl.putConstraint ( SpringLayout.NORTH, c5,  BY2, SpringLayout.SOUTH, l4 );
     sl.putConstraint ( SpringLayout.WEST,  c5,  BX2, SpringLayout.EAST,  l5 );
     // progress indicator
-    sl.putConstraint ( SpringLayout.NORTH, pb,  BY2, SpringLayout.SOUTH, l5 );
-    sl.putConstraint ( SpringLayout.WEST,  pb,  BX2, SpringLayout.EAST,  l6 );
-    // run button
-    sl.putConstraint ( SpringLayout.NORTH, b1,    0, SpringLayout.NORTH, pb );
-    sl.putConstraint ( SpringLayout.WEST,  b1,  BX3, SpringLayout.EAST,  pb );
+    sl.putConstraint ( SpringLayout.NORTH, pb,  DY1, SpringLayout.SOUTH, c5 );
+    sl.putConstraint ( SpringLayout.WEST,  pb,    0, SpringLayout.WEST,  c5 );
     // 3 down buttons from left to right
-    sl.putConstraint ( SpringLayout.SOUTH, b4,  CY1, SpringLayout.SOUTH, p  );
-    sl.putConstraint ( SpringLayout.EAST,  b4,  CX1, SpringLayout.EAST,  p  );
-    sl.putConstraint ( SpringLayout.SOUTH, b3,  CY1, SpringLayout.SOUTH, p  );
-    sl.putConstraint ( SpringLayout.EAST,  b3,  CX2, SpringLayout.WEST,  b4 );
-    sl.putConstraint ( SpringLayout.SOUTH, b2,  CY1, SpringLayout.SOUTH, p  );
-    sl.putConstraint ( SpringLayout.EAST,  b2,  CX2, SpringLayout.WEST,  b3 );
+    sl.putConstraint ( SpringLayout.SOUTH, b5,  EY1, SpringLayout.SOUTH, p  );
+    sl.putConstraint ( SpringLayout.EAST,  b5,  EX1, SpringLayout.EAST,  p  );
+    sl.putConstraint ( SpringLayout.SOUTH, b4,  EY1, SpringLayout.SOUTH, p  );
+    sl.putConstraint ( SpringLayout.EAST,  b4,  EX2, SpringLayout.WEST,  b5 );
+    sl.putConstraint ( SpringLayout.SOUTH, b3,  EY1, SpringLayout.SOUTH, p  );
+    sl.putConstraint ( SpringLayout.EAST,  b3,  EX2, SpringLayout.WEST,  b4 );
+    // run button
+    sl.putConstraint ( SpringLayout.SOUTH, b2,  CY1, SpringLayout.NORTH, b5 );
+    sl.putConstraint ( SpringLayout.EAST,  b2,    0, SpringLayout.EAST,  b5 );
     // draw button, located above run button
-    sl.putConstraint ( SpringLayout.SOUTH, b5,   -3, SpringLayout.NORTH, b1 );
-    sl.putConstraint ( SpringLayout.WEST,  b5,    0, SpringLayout.WEST,  b1 );
+    sl.putConstraint ( SpringLayout.SOUTH, b1,  CY1, SpringLayout.NORTH, b2 );
+    sl.putConstraint ( SpringLayout.EAST,  b1,    0, SpringLayout.EAST,  b5 );
     // add all to panel
     p.add( sp );
     p.add( l1 );
@@ -275,9 +284,18 @@ JPanel getApplicationPanel()
     return p;
     }
 
-// Buttons listeners, handlers for buttons press
+// Buttons listeners, handlers for buttons press, 7 buttons used
 
-// RUN button
+// (1) DRAW button
+private class LstDraw implements ActionListener
+    {
+    @Override public void actionPerformed ( ActionEvent e )
+        {
+        childFrame.start();
+        }
+    }
+
+// (2) RUN button
 private class LstRun implements ActionListener
     {
     @Override public void actionPerformed ( ActionEvent e )
@@ -293,9 +311,9 @@ private class LstRun implements ActionListener
             threadsCount = THREADS_COUNT[j];
             repeatsCount = REPEATS_COUNT[k];
             Object[] disabledComponents = new Object[8];
-            disabledComponents[0] = b2;   // skip b1=run, for redefine to stop
-            disabledComponents[1] = b3;
-            disabledComponents[2] = b4;
+            disabledComponents[0] = b3;   // skip b2=run, for redefine to stop
+            disabledComponents[1] = b4;   // skip b2=draw, can open during test
+            disabledComponents[2] = b5;
             disabledComponents[3] = c1;
             disabledComponents[4] = c2;
             disabledComponents[5] = c3;
@@ -316,7 +334,7 @@ private class LstRun implements ActionListener
             // run test
             aRun = new ActionRun
                 ( benchmarkTableModel , rangeModel , pb , 
-                  b1 , lst1 ,
+                  b2 , lst1 ,
                   disabledComponents , (JFrame)thisFrame ,
                   arraySize , threadsCount , repeatsCount , m , d ,
                   logValues , logTags ,
@@ -326,7 +344,7 @@ private class LstRun implements ActionListener
         }
     }
 
-// ABOUT button
+// (3) ABOUT button
 private class LstAbout implements ActionListener
     {
     @Override public void actionPerformed ( ActionEvent e )
@@ -340,7 +358,7 @@ private class LstAbout implements ActionListener
         }
     }
             
-// REPORT button 
+// (4) REPORT button 
 private class LstReport implements ActionListener
     {
     @Override public void actionPerformed ( ActionEvent e )
@@ -421,21 +439,12 @@ private class LstReport implements ActionListener
         }
     }
 
-// CANCEL button
+// (5) CANCEL button
 private class LstCancel implements ActionListener
     {
     @Override public void actionPerformed ( ActionEvent e )
         {
         System.exit( 0 );
-        }
-    }
-
-// DRAW button
-private class LstDraw implements ActionListener
-    {
-    @Override public void actionPerformed ( ActionEvent e )
-        {
-        childFrame.start();
         }
     }
 

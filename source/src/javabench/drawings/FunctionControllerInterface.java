@@ -1,5 +1,5 @@
 /*
-Multithread math calculations benchmark utility. (C)2019 IC Book Labs.
+Multithread math calculations benchmark utility. (C)2021 IC Book Labs.
 -----------------------------------------------------------------------
 Package for support functions Y=F(X) drawings.
 Controller interface for MVC (Model, View, Controller) pattern.

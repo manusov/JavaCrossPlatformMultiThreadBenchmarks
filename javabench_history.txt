@@ -1,8 +1,11 @@
+JavaBench v1.00.01 (February, 06, 2021)
+1) Some changes at main window GUI.
+
+
 JavaBench v1.00.00 (February, 05, 2021)
 1) Change web link.
 2) Some changes at GUI.
 3) Add comments to source code.
-
 
 
 Previous versions key points:
