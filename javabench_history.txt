@@ -1,3 +1,8 @@
+JavaBench v1.00.02 (October, 14, 2024)
+1) Fixed bug at GUI: unexpected open "Draw"
+window after second run test by "Run" button.
+
+
 JavaBench v1.00.01 (February, 06, 2021)
 1) Some changes at main window GUI.
 

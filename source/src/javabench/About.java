@@ -8,8 +8,8 @@ package javabench;
 
 class About 
 {
-private final static String VERSION_NAME = "v1.00.01";
-private final static String VENDOR_NAME  = "(C)2021 IC Book Labs";
+private final static String VERSION_NAME = "v1.00.02";
+private final static String VENDOR_NAME  = "(C)2024 IC Book Labs";
 private final static String SHORT_NAME   = "Math Benchmark " + VERSION_NAME;
 private final static String LONG_NAME    = "Java " + SHORT_NAME;
 private final static String WEB_SITE     = "https://github.com/manusov";

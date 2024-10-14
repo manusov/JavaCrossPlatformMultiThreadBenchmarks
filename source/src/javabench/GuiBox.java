@@ -334,7 +334,8 @@ private class LstRun implements ActionListener
             // run test
             aRun = new ActionRun
                 ( benchmarkTableModel , rangeModel , pb , 
-                  b2 , lst1 ,
+            //    b2 , lst1 , // Bug fix with incorrect open "Draw" by "Run".
+                  b2 , lst2 ,
                   disabledComponents , (JFrame)thisFrame ,
                   arraySize , threadsCount , repeatsCount , m , d ,
                   logValues , logTags ,
